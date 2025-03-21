@@ -5,5 +5,5 @@
 @endsection
 
 @section('main_content')
-    <p>texttext text texttexttext texttexttext texttext texttexttexttext</p>
+    <p>Главная</p>
 @endsection

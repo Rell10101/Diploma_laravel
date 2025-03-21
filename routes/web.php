@@ -8,9 +8,11 @@ use App\Http\Controllers\MainController;
 Route::get('/', [MainController::class, 'home']);
 
 //Route::get('/about', 'MainController@about');
-Route::get('/about', [MainController::class, "about"] );
+//Route::get('/about', [MainController::class, "about"] );
+Route::get('/request', [MainController::class, "request"] );
+Route::post('/request/send', [MainController::class, "request_send"] );
 
-Route::get('/review', [MainController::class, "review"] );
+Route::get('/review', [MainController::class, "review"] )->name('review');
 Route::post('/review/check', [MainController::class, "review_check"] );
 
 // Route::get('/user/{id}/{name}', function ($id, $name) {
