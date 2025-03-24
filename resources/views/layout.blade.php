@@ -17,7 +17,7 @@
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/">Главная</a>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/request">Отправить заявку</a>
       </nav>
-      <a class="btn btn-outline-primary" href="/review">Отзывы</a>
+      <!-- <a class="btn btn-outline-primary" href="/review">Отзывы</a> -->
     </div>
 
     <div class="container">
