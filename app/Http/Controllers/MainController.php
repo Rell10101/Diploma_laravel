@@ -68,4 +68,8 @@ class MainController extends Controller
 
         return back();
     }
+
+    public function request_show() {
+        return view('request_show');
+    }
 }
