@@ -26,6 +26,8 @@
         @csrf
         <input type="text" name="title" id="title" placeholder="Введите название заявки" class="form-control"><br>
         <textarea name="description" id="description" placeholder="Введите подробное описание" class="form-control"></textarea><br>
+         <!-- Скрытое поле для логина пользователя -->
+        <input type="hidden" name="client" id="client" value="{{ Auth::user()->name }}">
         <label>Укажите срок выполнения</label>
         <input type="datetime-local" id="deadline" name="deadline" class="form-control"><br>
         <!-- <input type="text" id="priority" name="priority" placeholder="Введите приоритетность" class="form-control"><br> -->

@@ -56,7 +56,7 @@ class MainController extends Controller
         $request = new Requests();
         $request->title = $r->input('title');
         $request->description = $r->input('description');
-        $request->client = 'client_default';
+        $request->client = $r->input('client'); //'client_default';
         $request->deadline = $r->input('deadline');
         $request->priority = $r->input('priority');
         $request->executor = 'none';
