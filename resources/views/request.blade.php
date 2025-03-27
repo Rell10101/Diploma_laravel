@@ -26,7 +26,13 @@
         <textarea name="description" id="description" placeholder="Введите подробное описание" class="form-control"></textarea><br>
         <label>Укажите срок выполнения</label>
         <input type="datetime-local" id="deadline" name="deadline" class="form-control"><br>
-        <input type="text" id="priority" name="priority" placeholder="Введите приоритетность" class="form-control"><br>
+        <!-- <input type="text" id="priority" name="priority" placeholder="Введите приоритетность" class="form-control"><br> -->
+        <label>Укажите приоритетность вашей задачи</label>
+        <select id="priority" name="priority" class="form-control">
+            <option>Малая</option>
+            <option>Средняя</option>
+            <option>Высокая</option>
+        </select><br>
         <input type="text" id="equipment_id" name="equipment_id" placeholder="Выберите аппаратуру" class="form-control"><br>
         <button type="submit" class="btn btn-success">Отправить</button>
     </form>
