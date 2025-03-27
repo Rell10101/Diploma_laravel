@@ -1,3 +1,5 @@
+# Diploma_laravel
+
 <p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
@@ -44,7 +46,7 @@ We would like to extend our thanks to the following sponsors for funding Laravel
 - **[Cyber-Duck](https://cyber-duck.co.uk)**
 - **[DevSquad](https://devsquad.com/hire-laravel-developers)**
 - **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
+- **[Redberry](https://redberry.international)
 - **[Active Logic](https://activelogic.com)**
 - **[byte5](https://byte5.de)**
 - **[OP.GG](https://op.gg)**
