@@ -29,6 +29,9 @@ Route::get('/request', [MainController::class, "request"] );
 Route::post('/request/send', [MainController::class, "request_send"] );
 // Route::get('/request_show', [MainController::class, "request_show"] );
 
+Route::get('/users_show', [MainController::class, 'users_show'])->name('users.users_show');
+Route::post('/users/{id}/role_id', [MainController::class, 'updateRole'])->name('users.updateRole');
+
 Route::get('/request_show', [MainController::class, 'request_show'])->name('requests.request_show');
 
 Route::get('/review', [MainController::class, "review"] )->name('review');

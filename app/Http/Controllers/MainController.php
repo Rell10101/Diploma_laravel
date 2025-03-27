@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 //use App\Contact;
 use App\Models\Requests;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class MainController extends Controller
@@ -80,5 +81,24 @@ class MainController extends Controller
 
         // Передайте данные в представление
         return view('request_show', compact('requests'));
+    }
+
+    public function users_show()
+    {
+        $users = User::all();
+        return view('users_show', compact('users'));
+    }
+
+    public function updateRole(Request $request, $id)
+    {
+        
+
+        // Найдите пользователя по ID и обновите его роль
+        $user = User::findOrFail($id);
+        $user->role_id = $request->role_id;
+        $user->save();
+
+        // Перенаправление с сообщением об успехе
+        return redirect()->route('users.users_show')->with('success', 'Роль пользователя обновлена!');
     }
 }
