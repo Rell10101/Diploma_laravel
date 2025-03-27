@@ -7,7 +7,7 @@
 @endsection
 
 @section('main_content')
-    <h1>Страница просмотра заявок</h1>
+    <h1>Просмотр заявок</h1>
 
     <!-- если есть любая ошибка -->
     @if($errors->any())
@@ -26,7 +26,15 @@
         <thead>
             <tr>
                 <th>ID</th>
-                <th>Заголовок</th>
+                <th>Заявка</th>
+                <th>Описание</th>
+                <th>Клиент</th>
+                <th>Срок выполнения</th>
+                <th>Приоритет</th>
+                <th>Исполнитель</th>
+                <th>Статус выполнения</th>
+                <th>Менеджер</th>
+                <th>Аппаратура</th>
             </tr>
         </thead>
         <tbody>
@@ -34,6 +42,14 @@
                 <tr>
                     <td>{{ $r->id }}</td>
                     <td>{{ $r->title }}</td>
+                    <td>{{ $r->description }}</td>
+                    <td>{{ $r->client }}</td>
+                    <td>{{ $r->deadline }}</td>
+                    <td>{{ $r->priority }}</td>
+                    <td>{{ $r->executor }}</td>
+                    <td>{{ $r->status }}</td>
+                    <td>{{ $r->manager }}</td>
+                    <td>{{ $r->equipment_id }}</td>
                 </tr>
             @endforeach
         </tbody>

@@ -7,7 +7,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title')</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
-</head>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse; /* Убирает двойные границы между ячейками */
+        }
+        th, td {
+            padding: 10px; /* Отступы внутри ячеек */
+            border: 1px solid #ddd; /* Граница ячеек */
+        }
+        tr {
+            margin-bottom: 10px; /* Отступ между строками */
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2; /* Цвет фона для четных строк */
+        }
+    </style>
+  </head>
 <body>
     <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
       <a href="/" class="d-flex align-items-center link-body-emphasis text-decoration-none">
