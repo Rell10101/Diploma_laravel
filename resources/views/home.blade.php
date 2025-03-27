@@ -1,3 +1,5 @@
+
+@auth
 @extends('layout') 
 
 @section('title')
@@ -6,4 +8,17 @@
 
 @section('main_content')
     <p>Главная</p>
+    <form action="{{ route('logout') }}" method="POST" style="position: fixed; bottom: 20px; left: 20px;">
+    @csrf
+    <button type="submit" class="btn btn-danger">Выйти</button>
+    </form>
+
 @endsection
+@endauth
+
+
+@guest
+    <p>Пожалуйста, войдите в систему, чтобы получить доступ к этому контенту.</p>
+    <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/login">Авторизация</a>
+    <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/register">Регистрация</a>
+@endguest

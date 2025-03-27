@@ -1,3 +1,5 @@
+@auth
+
 @extends('layout') 
 
 @section('title')
@@ -20,6 +22,29 @@
         </div>
     @endif
 
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Заголовок</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach ($requests as $r)
+                <tr>
+                    <td>{{ $r->id }}</td>
+                    <td>{{ $r->title }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
     
 
 @endsection
+@endauth
+
+@guest
+    <p>Пожалуйста, войдите в систему, чтобы получить доступ к этому контенту.</p>
+    <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/login">Авторизация</a>
+    <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/register">Регистрация</a>
+@endguest

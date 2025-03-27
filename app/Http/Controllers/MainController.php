@@ -69,7 +69,16 @@ class MainController extends Controller
         return back();
     }
 
-    public function request_show() {
-        return view('request_show');
+    // public function request_show() {
+    //     return view('request_show');
+    // }
+
+    public function request_show()
+    {
+        // Получите все записи из таблицы requests
+        $requests = Requests::all();
+
+        // Передайте данные в представление
+        return view('request_show', compact('requests'));
     }
 }
