@@ -22,6 +22,8 @@ Route::middleware(['auth'])->group(function () {
     })->name('dashboard');
 });
 
+Route::get('/profile', [MainController::class, 'profile_show'])->middleware('auth');
+
 
 //Route::get('/about', 'MainController@about');
 //Route::get('/about', [MainController::class, "about"] );

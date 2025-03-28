@@ -7,6 +7,7 @@ use App\Models\Contact;
 use App\Models\Requests;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
@@ -100,5 +101,11 @@ class MainController extends Controller
 
         // Перенаправление с сообщением об успехе
         return redirect()->route('users.users_show')->with('success', 'Роль пользователя обновлена!');
+    }
+
+    public function profile_show()
+    {
+        $user = Auth::user(); // Получаем текущего аутентифицированного пользователя
+        return view('profile', compact('user')); // Передаем пользователя в представление
     }
 }

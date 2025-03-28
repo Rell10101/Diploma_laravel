@@ -8,10 +8,7 @@
 
 @section('main_content')
     <p>Главная</p>
-    <form action="{{ route('logout') }}" method="POST" style="position: fixed; bottom: 20px; left: 20px;">
-    @csrf
-    <button type="submit" class="btn btn-danger">Выйти</button>
-    </form>
+    
 
 @endsection
 @endauth

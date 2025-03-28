@@ -33,6 +33,7 @@
 
       <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/">Главная</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/profile">Профиль</a>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/request">Отправить заявку</a>
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/request_show">Просмотреть список заявок</a>
         @if(Auth::check() && Auth::user()->role_id == '1')
