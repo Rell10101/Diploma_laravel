@@ -84,6 +84,30 @@ class MainController extends Controller
         return view('request_show', compact('requests'));
     }
 
+    public function accept($id)
+    {
+        $request = Requests::find($id);
+        if ($request) {
+            $request->executor = Auth::id(); // Назначаем текущего пользователя исполнителем
+            $request->status = 'В работе'; // Обновляем статус, если необходимо
+            $request->save();
+        }
+        return redirect()->back()->with('success', 'Заявка принята.');
+    }
+
+    public function decline($id)
+    {
+        $request = Requests::find($id);
+        if ($request && $request->executor == Auth::id()) {
+            $request->executor = 'none'; // Убираем исполнителя
+            $request->status = 'Ожидает исполнителя'; // Обновляем статус, если необходимо
+            $request->save();
+            return redirect()->back()->with('success', 'Вы отказались от выполнения заявки.');
+        }
+
+        return redirect()->back()->with('error', 'Не удалось отказаться от заявки.');
+    }
+
     public function users_show()
     {
         $users = User::all();

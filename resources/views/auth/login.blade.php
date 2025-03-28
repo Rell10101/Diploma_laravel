@@ -19,6 +19,9 @@
             <button type="submit">Login</button>
         </div>
     </form>
+
+    <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/register">Регистрация</a>
+    
     @if ($errors->any())
         <div>
             <ul>
