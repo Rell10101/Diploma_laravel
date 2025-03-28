@@ -42,6 +42,9 @@ Route::get('/request_show', [MainController::class, 'request_show'])->name('requ
 Route::get('/review', [MainController::class, "review"] )->name('review');
 Route::post('/review/check', [MainController::class, "review_check"] );
 
+Route::get('/chat', [MainController::class, 'chat'])->name('chat');
+Route::post('/chat_accept', [MainController::class, "chat_accept"] );
+
 // Route::get('/user/{id}/{name}', function ($id, $name) {
 //     return 'ID: '. $id.'. Name: '.$name;
 // });
