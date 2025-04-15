@@ -152,14 +152,14 @@ class MainController extends Controller
             'stream' => false,     // Отключить потоковый ответ
             'options' => [
                 'temperature' => 0.2,
-                'num_predict' => 100
+                'num_predict' => 1000
             ]
         ]);
 
         $message = $response->json()['response']; // Получаем сообщение от бота
         $message = str_replace('<think>', '', $message); // Убираем <think>
         $message = str_replace('</think>', '', $message); // Убираем </think>
-
+            
         if ($response->successful()) {
             //return $response->json()['response'];
             //printf($response->json()['response']);
