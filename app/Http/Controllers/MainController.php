@@ -78,8 +78,17 @@ class MainController extends Controller
 
     public function request_show()
     {
+        $user = Auth::user(); // Получаем текущего аутентифицированного пользователя
         // Получите все записи из таблицы requests
-        $requests = Requests::all();
+        //$requests = Requests::all();
+
+        if ($user->role_id == 3) {
+            // Если роль клиента, фильтруем записи по имени
+            $requests = Requests::where('client', $user->name)->get();
+        } else {
+            // Если не клиент, получаем все записи или обрабатываем по-другому
+            $requests = Requests::all();
+        }
 
         // Передайте данные в представление
         return view('request_show', compact('requests'));

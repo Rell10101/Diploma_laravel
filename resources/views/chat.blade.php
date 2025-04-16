@@ -26,7 +26,7 @@
         @csrf
         <textarea name="message" id="message" placeholder="Введите сообщение" class="form-control"></textarea><br>
         <button type="submit" class="btn btn-success">Отправить</button><br><br>
-        <!-- <textarea name="history" id="history" class="form-control">{{ $data }}</textarea><br> -->
+        
         <textarea name="generated_text" rows="20" cols="180">{{ $data }}</textarea>
         
     </form>
