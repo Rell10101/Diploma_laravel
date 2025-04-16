@@ -120,7 +120,12 @@ class MainController extends Controller
 
     public function users_show()
     {
-        $users = User::all();
+        //$users = User::all();
+        //return view('users_show', compact('users'));
+
+        
+        $currentUserName = Auth::user()->name;
+        $users = User::where('name', '!=', $currentUserName)->get();
         return view('users_show', compact('users'));
     }
 
