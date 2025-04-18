@@ -47,7 +47,6 @@
                                 <option value="2">Менеджер</option>
                                 <option value="3">Клиент</option>
                                 <option value="4">Исполнитель</option>
-                                <!-- Добавьте другие роли, если необходимо -->
                             </select>
                             <button type="submit">Изменить</button>
                         </form>

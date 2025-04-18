@@ -61,21 +61,41 @@
                                 <button type="submit">Принять</button>
                             </form>
                         @elseif($r->executor == Auth::user()->id) <!-- Текущий пользователь является исполнителем -->
-                            <form action="{{ route('requests.complete', $r->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit">Выполнено</button>
-                            </form>
-                            <form action="{{ route('requests.decline', $r->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit">Отказаться</button>
-                            </form>
+                            @if($r->status == 'in_progress') <!-- Если работа в процессе -->
+                                <form action="{{ route('requests.complete', $r->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit">Выполнено</button>
+                                </form>
+                                <form action="{{ route('requests.decline', $r->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit">Отказаться</button>
+                                </form>
+                            @elseif($r->status == 'completed') <!-- Если работа выполнена -->
+                                <form action="{{ route('requests.markAsNotCompleted', $r->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit">Не выполнено</button>
+                                </form>
+                            @endif
                         @endif
                     </td>
+                @endif
+                @if($r->client == Auth::user()->name) 
+                <td>
+                <form action="{{ route('requests.destroy', $r->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Вы уверены, что хотите удалить эту запись?');">
+                    @csrf
+                    @method('DELETE') <!-- Указываем метод DELETE -->
+                    <button type="submit">Удалить</button>
+                </form>
+                </td>
                 @endif
             </tr>
         @endforeach
     </tbody>
 </table>
+
+
+
+
 
 
     

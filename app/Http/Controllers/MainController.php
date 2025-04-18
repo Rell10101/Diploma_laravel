@@ -97,13 +97,13 @@ class MainController extends Controller
     public function accept($id)
     {
         $request = Requests::find($id);
-        if ($request) {
-            $request->executor = Auth::id(); // Назначаем текущего пользователя исполнителем
-            $request->status = 'В работе'; // Обновляем статус, если необходимо
-            $request->save();
-        }
-        return redirect()->back()->with('success', 'Заявка принята.');
+        $request->executor = Auth::user()->id; // Назначаем исполнителя
+        $request->status = 'in_progress'; // Обновляем статус на "в работе"
+        $request->save();
+    
+        return redirect()->back()->with('success', 'Заявка принята и находится в работе.');
     }
+    
 
     public function complete($id)
     {
@@ -113,6 +113,16 @@ class MainController extends Controller
     
         return redirect()->back()->with('success', 'Работа выполнена.');
     }
+    public function markAsNotCompleted($id)
+    {
+    $request = Requests::find($id);
+    $request->status = 'in_progress'; // Возвращаем статус к "в работе"
+    $request->save();
+
+    return redirect()->back()->with('success', 'Работа помечена как не выполненная.');
+    }
+
+
 
     public function decline($id)
     {
@@ -126,6 +136,20 @@ class MainController extends Controller
 
         return redirect()->back()->with('error', 'Не удалось отказаться от заявки.');
     }
+
+    public function destroy($id)
+    {
+        $record = Requests::findOrFail($id); 
+
+        // Проверяем, имеет ли пользователь право удалить запись
+        if (Auth::user()->name == $record->client) {
+            $record->delete();
+            return redirect()->back()->with('success', 'Запись успешно удалена.');
+        } else {
+            return redirect()->back()->with('error', 'У вас нет прав для удаления этой записи.');
+        }
+    }
+
 
     public function users_show()
     {
