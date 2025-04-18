@@ -31,11 +31,11 @@
         <label>Укажите срок выполнения</label>
         <input type="datetime-local" id="deadline" name="deadline" class="form-control"><br>
         <!-- <input type="text" id="priority" name="priority" placeholder="Введите приоритетность" class="form-control"><br> -->
-        <label>Укажите приоритетность вашей задачи</label>
+        <label>Укажите приоритет вашей задачи</label>
         <select id="priority" name="priority" class="form-control">
-            <option>Малая</option>
-            <option>Средняя</option>
-            <option>Высокая</option>
+            <option>Малый</option>
+            <option>Средний</option>
+            <option>Высокий</option>
         </select><br>
         <input type="text" id="equipment_id" name="equipment_id" placeholder="Выберите аппаратуру" class="form-control"><br>
         <button type="submit" class="btn btn-success">Отправить</button>
