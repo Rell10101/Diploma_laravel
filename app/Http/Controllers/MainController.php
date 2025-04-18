@@ -105,6 +105,15 @@ class MainController extends Controller
         return redirect()->back()->with('success', 'Заявка принята.');
     }
 
+    public function complete($id)
+    {
+        $request = Requests::find($id);
+        $request->status = 'completed'; // Обновляем статус на выполнено
+        $request->save();
+    
+        return redirect()->back()->with('success', 'Работа выполнена.');
+    }
+
     public function decline($id)
     {
         $request = Requests::find($id);

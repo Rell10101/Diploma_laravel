@@ -33,6 +33,7 @@ Route::post('/request/send', [MainController::class, "request_send"] );
 
 Route::post('/requests/{id}/accept', [MainController::class, 'accept'])->name('requests.accept')->middleware('auth');
 Route::post('/requests/{id}/decline', [MainController::class, 'decline'])->name('requests.decline')->middleware('auth');
+Route::post('/requests/{id}/complete', [MainController::class, 'complete'])->name('requests.complete')->middleware('auth');
 
 Route::get('/users_show', [MainController::class, 'users_show'])->name('users.users_show');
 Route::post('/users/{id}/role_id', [MainController::class, 'updateRole'])->name('users.updateRole');

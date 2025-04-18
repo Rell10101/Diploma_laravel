@@ -55,18 +55,20 @@
                 <td>{{ $r->equipment_id }}</td>
                 @if(Auth::user()->role_id == 4)
                     <td>
-                        @if($r->executor == 'none') <!-- Проверяем, что исполнитель еще не назначен -->
+                        @if($r->executor == 'none') <!-- Исполнитель еще не назначен -->
                             <form action="{{ route('requests.accept', $r->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 <button type="submit">Принять</button>
                             </form>
-                        @else
-                            @if($r->executor == Auth::user()->id) <!-- Проверяем, что текущий пользователь является исполнителем -->
-                                <form action="{{ route('requests.decline', $r->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit">Отказаться</button>
-                                </form>
-                            @endif
+                        @elseif($r->executor == Auth::user()->id) <!-- Текущий пользователь является исполнителем -->
+                            <form action="{{ route('requests.complete', $r->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit">Выполнено</button>
+                            </form>
+                            <form action="{{ route('requests.decline', $r->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit">Отказаться</button>
+                            </form>
                         @endif
                     </td>
                 @endif
@@ -74,6 +76,7 @@
         @endforeach
     </tbody>
 </table>
+
 
     
 
