@@ -97,7 +97,7 @@ class MainController extends Controller
     public function accept($id)
     {
         $request = Requests::find($id);
-        $request->executor = Auth::user()->id; // Назначаем исполнителя
+        $request->executor = Auth::user()->name; // Назначаем исполнителя
         $request->status = 'in_progress'; // Обновляем статус на "в работе"
         $request->save();
     
@@ -127,7 +127,7 @@ class MainController extends Controller
     public function decline($id)
     {
         $request = Requests::find($id);
-        if ($request && $request->executor == Auth::id()) {
+        if ($request && $request->executor == Auth::user()->name) {
             $request->executor = 'none'; // Убираем исполнителя
             $request->status = 'Ожидает исполнителя'; // Обновляем статус, если необходимо
             $request->save();

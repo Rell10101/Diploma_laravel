@@ -60,7 +60,7 @@
                                 @csrf
                                 <button type="submit">Принять</button>
                             </form>
-                        @elseif($r->executor == Auth::user()->id) <!-- Текущий пользователь является исполнителем -->
+                        @elseif($r->executor == Auth::user()->name) <!-- Текущий пользователь является исполнителем -->
                             @if($r->status == 'in_progress') <!-- Если работа в процессе -->
                                 <form action="{{ route('requests.complete', $r->id) }}" method="POST" style="display:inline;">
                                     @csrf
