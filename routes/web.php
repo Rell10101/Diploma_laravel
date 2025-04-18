@@ -38,6 +38,9 @@ Route::post('/requests/{id}/not-completed', [MainController::class, 'markAsNotCo
 
 Route::delete('/requests/{id}', [MainController::class, 'destroy'])->name('requests.destroy');
 
+Route::post('/requests/{id}/check', [MainController::class, 'check'])->name('requests.check');
+Route::post('/requests/{id}/mark-checked', [MainController::class, 'markAsChecked'])->name('requests.markChecked');
+
 
 Route::get('/users_show', [MainController::class, 'users_show'])->name('users.users_show');
 Route::post('/users/{id}/role_id', [MainController::class, 'updateRole'])->name('users.updateRole');

@@ -88,6 +88,21 @@
                 </form>
                 </td>
                 @endif
+                @if(Auth::user()->role_id == 2)
+                    <td>
+                        @if($r->status == 'completed')
+                            <form action="{{ route('requests.check', $r->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit">Проверить</button>
+                            </form>
+                        @elseif($r->status == 'проверка')
+                            <form action="{{ route('requests.markChecked', $r->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit">Проверено</button>
+                            </form>
+                        @endif
+                    </td>
+                @endif
             </tr>
         @endforeach
     </tbody>
