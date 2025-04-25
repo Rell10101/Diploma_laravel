@@ -29,7 +29,7 @@
         
         <textarea name="generated_text" rows="20" cols="180">{{ $data }}</textarea>
         
-    </form>
+    </form> 
 
 @endsection
 @endauth

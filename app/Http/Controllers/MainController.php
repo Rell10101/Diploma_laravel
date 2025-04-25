@@ -247,6 +247,6 @@ class MainController extends Controller
 
         //return response()->json(['error' => 'Ошибка запроса'], 500);
         //printf(response()->json(['error' => 'Ошибка запроса'], 500));
-        return view('chat', ['data' => response()->json(['error' => 'Ошибка запроса'], 500)]);
+        return view('chat', compact(['data' => response()->json(['error' => 'Ошибка запроса'], 500)]) );
     }
 }
