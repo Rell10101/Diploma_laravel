@@ -224,6 +224,7 @@ class MainController extends Controller
         // это нужно передать ollama
         //$r->input('message');
 
+
         $response = Http::post('http://localhost:11434/api/generate', [
             'model' => 'deepseek-r1:1.5b',  // Название модели
             'prompt' => $request->input('message'),  // Ваш запрос

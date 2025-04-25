@@ -27,7 +27,12 @@
         <textarea name="message" id="message" placeholder="Введите сообщение" class="form-control"></textarea><br>
         <button type="submit" class="btn btn-success">Отправить</button><br><br>
         
-        <textarea name="generated_text" rows="20" cols="180">{{ $data }}</textarea>
+        <?php 
+            if (!empty($data)) {?>
+                <textarea name="generated_text" rows="20" cols="180">{{ $data }}</textarea>
+        <?php    }  ?>
+        
+        
         
     </form> 
 
