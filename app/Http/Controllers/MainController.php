@@ -180,31 +180,7 @@ class MainController extends Controller
         }
     }
 
-
-
-    public function users_show()
-    {
-        //$users = User::all();
-        //return view('users_show', compact('users'));
-
-        
-        $currentUserName = Auth::user()->name;
-        $users = User::where('name', '!=', $currentUserName)->get();
-        return view('users_show', compact('users'));
-    }
-
-    public function updateRole(Request $request, $id)
-    {
-        
-
-        // Найдите пользователя по ID и обновите его роль
-        $user = User::findOrFail($id);
-        $user->role_id = $request->role_id;
-        $user->save();
-
-        // Перенаправление с сообщением об успехе
-        return redirect()->route('users.users_show')->with('success', 'Роль пользователя обновлена!');
-    }
+    
 
     public function profile_show()
     {

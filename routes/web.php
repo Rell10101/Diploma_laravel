@@ -4,6 +4,7 @@
 
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -42,8 +43,8 @@ Route::post('/requests/{id}/check', [MainController::class, 'check'])->name('req
 Route::post('/requests/{id}/mark-checked', [MainController::class, 'markAsChecked'])->name('requests.markChecked');
 
 
-Route::get('/users_show', [MainController::class, 'users_show'])->name('users.users_show');
-Route::post('/users/{id}/role_id', [MainController::class, 'updateRole'])->name('users.updateRole');
+Route::get('/users_show', [AdminController::class, 'users_show'])->name('users.users_show');
+Route::post('/users/{id}/role_id', [AdminController::class, 'updateRole'])->name('users.updateRole');
 
 Route::get('/request_show', [MainController::class, 'request_show'])->name('requests.request_show');
 
