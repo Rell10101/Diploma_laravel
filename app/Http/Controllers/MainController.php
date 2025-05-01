@@ -148,40 +148,7 @@ class MainController extends Controller
             return redirect()->back()->with('error', 'У вас нет прав для удаления этой записи.');
         }
     }
-
-
-    public function check($id)
-    {
-        $record = Requests::findOrFail($id); // Замените Requests на вашу модель
-
-        // Проверяем, имеет ли пользователь право изменить статус
-        if (Auth::user()->role_id == 2 && $record->status == 'completed') {
-            $record->status = 'проверка'; // Изменяем статус на "проверка"
-            $record->save(); // Сохраняем изменения
-
-            return redirect()->back()->with('success', 'Статус успешно изменен на "проверка".');
-        } else {
-            return redirect()->back()->with('error', 'У вас нет прав для изменения статуса этой записи.');
-        }
-    }
-
-    public function markAsChecked($id)
-    {
-        $record = Requests::findOrFail($id); // Замените Requests на вашу модель
-
-        // Проверяем, имеет ли пользователь право изменить статус
-        if (Auth::user()->role_id == 2 && $record->status == 'проверка') {
-            $record->status = 'проверено'; // Изменяем статус на "проверено"
-            $record->save(); // Сохраняем изменения
-
-            return redirect()->back()->with('success', 'Статус успешно изменен на "проверено".');
-        } else {
-            return redirect()->back()->with('error', 'У вас нет прав для изменения статуса этой записи.');
-        }
-    }
-
     
-
     public function profile_show()
     {
         $user = Auth::user(); // Получаем текущего аутентифицированного пользователя

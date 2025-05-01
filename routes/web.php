@@ -5,6 +5,7 @@
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\ManagerController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -39,8 +40,8 @@ Route::post('/requests/{id}/not-completed', [MainController::class, 'markAsNotCo
 
 Route::delete('/requests/{id}', [MainController::class, 'destroy'])->name('requests.destroy');
 
-Route::post('/requests/{id}/check', [MainController::class, 'check'])->name('requests.check');
-Route::post('/requests/{id}/mark-checked', [MainController::class, 'markAsChecked'])->name('requests.markChecked');
+Route::post('/requests/{id}/check', [ManagerController::class, 'check'])->name('requests.check');
+Route::post('/requests/{id}/mark-checked', [ManagerController::class, 'markAsChecked'])->name('requests.markChecked');
 
 
 Route::get('/users_show', [AdminController::class, 'users_show'])->name('users.users_show');
