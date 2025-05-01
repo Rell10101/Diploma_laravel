@@ -52,9 +52,6 @@ Route::post('/users/{id}/role_id', [AdminController::class, 'updateRole'])->name
 // показ заявок
 Route::get('/request_show', [MainController::class, 'request_show'])->name('requests.request_show');
 
-Route::get('/review', [MainController::class, "review"] )->name('review');
-Route::post('/review/check', [MainController::class, "review_check"] );
-
 // чат-бот
 Route::get('/chat', [ChatController::class, 'chat'])->name('chat');
 Route::post('/chat_accept', [ChatController::class, "chat_accept"] );
