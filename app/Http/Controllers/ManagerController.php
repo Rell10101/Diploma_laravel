@@ -12,7 +12,7 @@ class ManagerController extends Controller
     public function check($id)
     {
         $record = Requests::findOrFail($id); 
-        if (Auth::user()->role_id == 2 && $record->status == 'completed') {
+        if (Auth::user()->role_id == 2 && $record->status == 'выполнено') {
             $record->status = 'проверка'; 
             $record->save(); 
             return redirect()->back()->with('success', 'Статус успешно изменен на "проверка".');

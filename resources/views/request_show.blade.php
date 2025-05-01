@@ -55,13 +55,13 @@
                 <td>{{ $r->equipment_id }}</td>
                 @if(Auth::user()->role_id == 4)
                     <td>
-                        @if($r->executor == 'none') <!-- Исполнитель еще не назначен -->
+                        @if($r->executor == '-') <!-- Исполнитель еще не назначен -->
                             <form action="{{ route('requests.accept', $r->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 <button type="submit">Принять</button>
                             </form>
                         @elseif($r->executor == Auth::user()->name) <!-- Текущий пользователь является исполнителем -->
-                            @if($r->status == 'in_progress') <!-- Если работа в процессе -->
+                            @if($r->status == 'в работе') <!-- Если работа в процессе -->
                                 <form action="{{ route('requests.complete', $r->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     <button type="submit">Выполнено</button>
@@ -70,7 +70,7 @@
                                     @csrf
                                     <button type="submit">Отказаться</button>
                                 </form>
-                            @elseif($r->status == 'completed') <!-- Если работа выполнена -->
+                            @elseif($r->status == 'выполнено') <!-- Если работа выполнена -->
                                 <form action="{{ route('requests.markAsNotCompleted', $r->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     <button type="submit">Не выполнено</button>
@@ -83,14 +83,14 @@
                 <td>
                 <form action="{{ route('requests.destroy', $r->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Вы уверены, что хотите удалить эту запись?');">
                     @csrf
-                    @method('DELETE') <!-- Указываем метод DELETE -->
+                    @method('DELETE')
                     <button type="submit">Удалить</button>
                 </form>
                 </td>
                 @endif
                 @if(Auth::user()->role_id == 2)
                     <td>
-                        @if($r->status == 'completed')
+                        @if($r->status == 'выполнено')
                             <form action="{{ route('requests.check', $r->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 <button type="submit">Проверить</button>
