@@ -25,14 +25,14 @@
     <h1>База знаний</h1>
 
     @if(Auth::user()->role_id == 4)
-    <a href="{{ route('knowledge_base.upload.form') }}">Загрузить новый файл</a>
+    <h2>Загрузить файл</h2>
+    <form action="{{ route('knowledge_base.upload') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="file" name="file" required>
+        <button type="submit">Загрузить</button>
+    </form>
     @endif
 
-    <ul>
-        @foreach ($files as $file)
-            <li><a href="{{ url('/knowledge_base/' . $file) }}">{{ $file }}</a></li>
-        @endforeach
-    </ul>
 
 @endsection
 @endauth

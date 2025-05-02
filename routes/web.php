@@ -59,7 +59,7 @@ Route::post('/chat_accept', [ChatController::class, "chat_accept"] );
 
 // база знаний
 Route::get('/knowledge_base', [KnowledgeBaseController::class, 'index']);
+Route::get('/knowledge_base/upload', [KnowledgeBaseController::class, 'create'])->name('knowledge_base.upload.form');
+Route::post('/knowledge_base/upload', [KnowledgeBaseController::class, 'store'])->name('knowledge_base.upload');
 Route::get('/knowledge_base/{filename}', [KnowledgeBaseController::class, 'show']);
-
-
 
