@@ -40,6 +40,7 @@
         @if(Auth::check() && Auth::user()->role_id == '1')
           <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/users_show">Список пользователей</a>
         @endif
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/knowledge_base">База знаний</a>
       </nav>
       <!-- <a class="btn btn-outline-primary" href="/review">Отзывы</a> -->
     </div>

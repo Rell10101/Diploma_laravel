@@ -5,6 +5,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\KnowledgeBaseController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
 
@@ -55,5 +56,10 @@ Route::get('/request_show', [MainController::class, 'request_show'])->name('requ
 // чат-бот
 Route::get('/chat', [ChatController::class, 'chat'])->name('chat');
 Route::post('/chat_accept', [ChatController::class, "chat_accept"] );
+
+// база знаний
+Route::get('/knowledge_base', [KnowledgeBaseController::class, 'index']);
+Route::get('/knowledge_base/{filename}', [KnowledgeBaseController::class, 'show']);
+
 
 
