@@ -32,6 +32,7 @@
         <button type="submit">Загрузить</button>
     </form>
     @endif
+    <a href="{{ url('/knowledge_base') }}">Назад к списку</a>
 
 
 @endsection
