@@ -41,8 +41,8 @@
           <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/users_show">Список пользователей</a>
         @endif
         <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/knowledge_base">База знаний</a>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/chatify">Чат</a>
       </nav>
-      <!-- <a class="btn btn-outline-primary" href="/review">Отзывы</a> -->
     </div>
 
     <div class="container">
