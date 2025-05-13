@@ -26,18 +26,32 @@
         @csrf
         <input type="text" name="title" id="title" placeholder="Введите название заявки" class="form-control"><br>
         <textarea name="description" id="description" placeholder="Введите подробное описание" class="form-control"></textarea><br>
-         <!-- Скрытое поле для логина пользователя -->
-        <input type="hidden" name="client" id="client" value="{{ Auth::user()->name }}">
+         <!-- Скрытое поле для логина пользователя 
+        <input type="hidden" name="client" id="client" value="{{ Auth::user()->name }}">-->
         <label>Укажите срок выполнения</label>
         <input type="datetime-local" id="deadline" name="deadline" class="form-control"><br>
-        <!-- <input type="text" id="priority" name="priority" placeholder="Введите приоритетность" class="form-control"><br> -->
         <label>Укажите приоритет вашей задачи</label>
         <select id="priority" name="priority" class="form-control">
             <option>Малый</option>
             <option>Средний</option>
             <option>Высокий</option>
         </select><br>
-        <input type="text" id="equipment_id" name="equipment_id" placeholder="Выберите аппаратуру" class="form-control"><br>
+        <label for="equipment_id">Выберите оборудование:</label>
+        <select id="equipment_id" name="equipment_id" class="form-control">
+            @foreach($equipment as $item)
+                <option value="{{ $item->id }}">{{ $item->title }}</option>
+            @endforeach
+        </select>
+        <br>
+        @if(Auth::user()->role_id == 2)
+            <label for="executor">Выбор исполнителя:</label>
+            <select id="executor" name="executor" class="form-control">
+            @foreach($executors as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+            </select>
+        @endif
+        <br>
         <button type="submit" class="btn btn-success">Отправить</button>
     </form>
 

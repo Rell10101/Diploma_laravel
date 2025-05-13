@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Contact;
 use App\Models\Requests;
+use App\Models\Equipment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,25 +16,49 @@ class MainController extends Controller
     }
 
     public function request() {
-        return view('request');
+        //return view('request');
+        $equipment = Equipment::all(); // Получаем все элементы из таблицы
+
+        // Загрузка пользователей с ролью исполнителя
+        $executors = User::where('role_id', 4)->get(); // Предполагаем, что роль исполнителя имеет ID 2
+
+        return view('request', compact('equipment', 'executors')); // Передаем данные в представление
     }
 
     public function request_send(Request $r) {
+
         $valid = $r->validate([
             'title' => 'required',
-            'description' => 'required',
-            'deadline' => 'required',
-            'priority' => 'required',
-            'equipment_id' => 'required',
+            //'description' => 'required',
+            //'deadline' => 'required',
+            //'priority' => 'required',
+            //'equipment_id' => 'required',
         ]);
 
         $request = new Requests();
+
         $request->title = $r->input('title');
-        $request->description = $r->input('description');
-        $request->client = $r->input('client'); 
+
+        if ($r->input('description') == null) {
+            $request->description = '-';
+        } else {
+            $request->description = $r->input('description');
+        }
+
+        $request->client = Auth::user()->name;
+        //$request->client = $r->input('client'); 
+
         $request->deadline = $r->input('deadline');
+
         $request->priority = $r->input('priority');
-        $request->executor = '-';
+
+        if ($r->input('executor') == null) {
+            $request->executor = '-';
+        } else {
+            $request->executor = $r->input('executor');
+        }
+        //$request->executor = '-';
+
         $request->status = 'В ожидании исполнителя';
         $request->manager = '-';
         $request->equipment_id = $r->input('equipment_id');
@@ -50,8 +75,11 @@ class MainController extends Controller
         if ($user->role_id == 3) {
             $requests = Requests::where('client', $user->name)->get();
         } else {
-            $requests = Requests::all();
+            //$requests = Requests::with('equipment')->get();
+            $requests = Requests::with(['equipment', 'executor'])->get();
+            //$requests = Requests::all();
         }
+        //dd($requests);
 
         return view('request_show', compact('requests'));
     }

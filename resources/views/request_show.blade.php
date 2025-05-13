@@ -49,13 +49,13 @@
                 <td>{{ $r->client }}</td>
                 <td>{{ $r->deadline }}</td>
                 <td>{{ $r->priority }}</td>
-                <td>{{ $r->executor }}</td>
+               <td>{{ $r->executor ? $r->executor->name : 'Неизвестный исполнитель' }}</td>
                 <td>{{ $r->status }}</td>
                 <td>{{ $r->manager }}</td>
-                <td>{{ $r->equipment_id }}</td>
+                <td>{{ $r->equipment->title }}</td>
                 @if(Auth::user()->role_id == 4)
                     <td>
-                        @if($r->executor == '-') <!-- Исполнитель еще не назначен -->
+                        @if($r->executor == NULL) <!-- Исполнитель еще не назначен -->
                             <form action="{{ route('requests.accept', $r->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 <button type="submit">Принять</button>
@@ -84,7 +84,7 @@
                 <form action="{{ route('requests.destroy', $r->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Вы уверены, что хотите удалить эту запись?');">
                     @csrf
                     @method('DELETE')
-                    <button type="submit">Удалить</button>
+                    <button type="submit">Отозвать заявку</button>
                 </form>
                 </td>
                 @endif

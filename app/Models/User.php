@@ -45,4 +45,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    public function role()
+    {
+        return $this->belongsTo(Roles::class);
+    }
+
+    // Определяем связь с моделью Request
+    public function requests()
+    {
+        return $this->hasMany(Request::class, 'executor', 'id');
+    }
 }
