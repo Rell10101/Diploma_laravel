@@ -76,12 +76,13 @@ class MainController extends Controller
             $requests = Requests::where('client', $user->name)->get();
         } else {
             //$requests = Requests::with('equipment')->get();
-            $requests = Requests::with(['equipment', 'executor'])->get();
+            $requests = Requests::with(['equipment'])->get();
+            $executors = User::where('role_id', 4)->get();
             //$requests = Requests::all();
         }
         //dd($requests);
 
-        return view('request_show', compact('requests'));
+        return view('request_show', compact('requests', 'executors'));
     }
 
     public function accept($id)

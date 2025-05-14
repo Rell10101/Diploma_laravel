@@ -49,43 +49,34 @@
                 <td>{{ $r->client }}</td>
                 <td>{{ $r->deadline }}</td>
                 <td>{{ $r->priority }}</td>
-               <td>{{ $r->executor ? $r->executor->name : 'Неизвестный исполнитель' }}</td>
+                <td>{{ $r->executor ? $r->executor->name : 'Неизвестный исполнитель' }}</td>
                 <td>{{ $r->status }}</td>
                 <td>{{ $r->manager }}</td>
                 <td>{{ $r->equipment->title }}</td>
-                @if(Auth::user()->role_id == 4)
+                @if(Auth::user()->role_id == 2)
                     <td>
-                        @if($r->executor == NULL) <!-- Исполнитель еще не назначен -->
-                            <form action="{{ route('requests.accept', $r->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit">Принять</button>
-                            </form>
-                        @elseif($r->executor == Auth::user()->name) <!-- Текущий пользователь является исполнителем -->
-                            @if($r->status == 'в работе') <!-- Если работа в процессе -->
-                                <form action="{{ route('requests.complete', $r->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit">Выполнено</button>
-                                </form>
-                                <form action="{{ route('requests.decline', $r->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit">Отказаться</button>
-                                </form>
-                            @elseif($r->status == 'выполнено') <!-- Если работа выполнена -->
-                                <form action="{{ route('requests.markAsNotCompleted', $r->id) }}" method="POST" style="display:inline;">
-                                    @csrf
-                                    <button type="submit">Не выполнено</button>
-                                </form>
-                            @endif
-                        @endif
+                        <!-- Форма для изменения исполнителя -->
+                        <form action="{{ route('requests.updateExecutor', $r->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <select name="executor_id">
+                                <option value="">Выберите исполнителя</option>
+                                @foreach($executors as $executor)
+                                    <option value="{{ $executor->id }}" {{ $r->executor_id == $executor->id ? 'selected' : '' }}>
+                                        {{ $executor->name }}
+                                    </option>
+                                @endforeach
+                            </select>
+                            <button type="submit">Изменить исполнителя</button>
+                        </form>
                     </td>
                 @endif
                 @if($r->client == Auth::user()->name) 
                 <td>
-                <form action="{{ route('requests.destroy', $r->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Вы уверены, что хотите удалить эту запись?');">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit">Отозвать заявку</button>
-                </form>
+                    <form action="{{ route('requests.destroy', $r->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Вы уверены, что хотите удалить эту запись?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Отозвать заявку</button>
+                    </form>
                 </td>
                 @endif
                 @if(Auth::user()->role_id == 2)

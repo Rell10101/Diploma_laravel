@@ -32,4 +32,27 @@ class ManagerController extends Controller
             return redirect()->back()->with('error', 'У вас нет прав для изменения статуса этой записи.');
         }
     }
+
+    public function updateExecutor(Request $request, $id)
+{
+    // Валидация входящих данных
+    $request->validate([
+        'executor_id' => 'required|exists:users,id', // Убедитесь, что выбранный исполнитель существует
+    ]);
+
+    // Найдите заявку по ID
+    $requestToUpdate = Requests::findOrFail($id);
+    
+    // Обновите ID исполнителя
+    $requestToUpdate->executor_id = $request->executor_id;
+    
+    $requestToUpdate->status = 'В работе';
+
+    // Сохраните изменения
+    $requestToUpdate->save();
+
+    // Перенаправьте пользователя обратно на страницу с сообщением об успешном обновлении
+    return redirect()->route('requests.request_show')->with('success', 'Исполнитель успешно изменен.');
+}
+
 }

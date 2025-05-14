@@ -45,6 +45,8 @@ Route::delete('/requests/{id}', [MainController::class, 'destroy'])->name('reque
 // действия менеджера
 Route::post('/requests/{id}/check', [ManagerController::class, 'check'])->name('requests.check');
 Route::post('/requests/{id}/mark-checked', [ManagerController::class, 'markAsChecked'])->name('requests.markChecked');
+Route::post('/requests/{id}/update-executor', [ManagerController::class, 'updateExecutor'])->name('requests.updateExecutor');
+
 
 // действия администратора
 Route::get('/users_show', [AdminController::class, 'users_show'])->name('users.users_show');
