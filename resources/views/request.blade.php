@@ -24,8 +24,9 @@
 
     <form method="post" action="/request/send">
         @csrf
+        <br>
         <input type="text" name="title" id="title" placeholder="Введите название заявки" class="form-control"><br>
-        <textarea name="description" id="description" placeholder="Введите подробное описание" class="form-control"></textarea><br>
+        <textarea name="description" id="description" placeholder="Введите подробное описание (необязательное поле)" class="form-control" rows="10" cols="30"></textarea><br>
          <!-- Скрытое поле для логина пользователя 
         <input type="hidden" name="client" id="client" value="{{ Auth::user()->name }}">-->
         <label>Укажите срок выполнения</label>

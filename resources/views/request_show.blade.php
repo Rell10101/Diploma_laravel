@@ -49,7 +49,7 @@
                 <td>{{ $r->client }}</td>
                 <td>{{ $r->deadline }}</td>
                 <td>{{ $r->priority }}</td>
-                <td>{{ $r->executor ? $r->executor->name : 'Неизвестный исполнитель' }}</td>
+                <td>{{ $r->executor ? $r->executor->name : '-' }}</td>
                 <td>{{ $r->status }}</td>
                 <td>{{ $r->manager }}</td>
                 <td>{{ $r->equipment->title }}</td>

@@ -53,9 +53,9 @@ class MainController extends Controller
         $request->priority = $r->input('priority');
 
         if ($r->input('executor') == null) {
-            $request->executor = '-';
+            $request->executor_id = null;
         } else {
-            $request->executor = $r->input('executor');
+            $request->executor_id = $r->input('executor');
         }
         //$request->executor = '-';
 
@@ -72,15 +72,15 @@ class MainController extends Controller
     {
         $user = Auth::user(); 
 
+        $executors = User::where('role_id', 4)->get();
+
         if ($user->role_id == 3) {
             $requests = Requests::where('client', $user->name)->get();
         } else {
             //$requests = Requests::with('equipment')->get();
             $requests = Requests::with(['equipment'])->get();
-            $executors = User::where('role_id', 4)->get();
             //$requests = Requests::all();
         }
-        //dd($requests);
 
         return view('request_show', compact('requests', 'executors'));
     }
