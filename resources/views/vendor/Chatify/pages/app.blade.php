@@ -1,3 +1,14 @@
+@auth
+
+@extends('layout') 
+
+@section('title')
+    Отправка заявки
+@endsection
+
+@section('main_content')
+
+
 @include('Chatify::layouts.headLinks')
 <div class="messenger">
     {{-- ----------------------Users/Groups lists side---------------------- --}}
@@ -110,3 +121,14 @@
 
 @include('Chatify::layouts.modals')
 @include('Chatify::layouts.footerLinks')
+
+
+@endsection
+@endauth
+
+
+@guest
+    <p>Пожалуйста, войдите в систему, чтобы получить доступ к этому контенту.</p>
+    <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/login">Авторизация</a>
+    <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/register">Регистрация</a>
+@endguest
