@@ -24,14 +24,21 @@
 
     <h1>База знаний</h1>
 
-    @if(Auth::user()->role_id == 4)
+    @if(Auth::user()->role_id == 4 || Auth::user()->role_id == 2)
     <a href="{{ route('knowledge_base.upload.form') }}">Загрузить новый файл</a>
     @endif
 
     <ul>
-        @foreach ($files as $file)
-            <li><a href="{{ url('/knowledge_base/' . $file) }}">{{ $file }}</a></li>
-        @endforeach
+    @foreach ($files as $file)
+        <li>
+            <a href="{{ url('/knowledge_base/' . $file) }}">{{ $file }}</a>
+            <form action="{{ route('files.destroy', $file) }}" method="POST" style="display:inline;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" onclick="return confirm('Вы уверены, что хотите удалить этот файл?');">Удалить</button>
+            </form>
+        </li>
+    @endforeach
     </ul>
 
 @endsection

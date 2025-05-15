@@ -24,7 +24,7 @@
 
     <h1>База знаний</h1>
 
-    @if(Auth::user()->role_id == 4)
+    @if(Auth::user()->role_id == 4 || Auth::user()->role_id == 2)
     <h2>Загрузить файл</h2>
     <form action="{{ route('knowledge_base.upload') }}" method="POST" enctype="multipart/form-data">
         @csrf

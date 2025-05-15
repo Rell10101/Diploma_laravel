@@ -43,4 +43,17 @@ class KnowledgeBaseController extends Controller
 
         return redirect()->route('knowledge_base.upload.form')->with('success', 'Файл успешно загружен!');
     }
+
+    public function destroy($filename)
+    {
+        $filePath = public_path('public/knowledge_base/' . $filename);
+
+        if (file_exists($filePath)) {
+            unlink($filePath); // Удаление файла
+            return redirect()->back()->with('success', 'Файл успешно удален.');
+        }
+
+        return redirect()->back()->with('error', 'Файл не найден.');
+    }
+
 }
