@@ -66,9 +66,26 @@ class MainController extends Controller
 
         $request->save();
 
-        // Отправка уведомления о новом сообщении
         $user = Auth::user(); 
         $user->notify(new EmailNotification('Вы сформировали заявку. Ожидайте, в скором времени её начнут выполнять', url('/request_show')));
+
+
+        $executors = User::where('role_id', 4)->get();
+        $managers = User::where('role_id', 2)->get();
+
+        // Отправьте уведомление каждому из них
+        foreach ($executors as $executor) {
+            // Не отправляем уведомление текущему пользователю
+            if ($executor->id !== $user->id) {
+                $executor->notify(new EmailNotification('Появилась новая заявка', url('/request_show')));
+            }
+        }
+        foreach ($managers as $manager) {
+            // Не отправляем уведомление текущему пользователю
+            if ($manager->id !== $user->id) {
+                $manager->notify(new EmailNotification('Появилась новая заявка', url('/request_show')));
+            }
+        }
 
         return back();
     }
