@@ -31,7 +31,7 @@ class MainController extends Controller
         $valid = $r->validate([
             'title' => 'required',
             //'description' => 'required',
-            //'deadline' => 'required',
+            'deadline' => 'required',
             //'priority' => 'required',
             //'equipment_id' => 'required',
         ]);
