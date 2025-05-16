@@ -53,6 +53,32 @@
                 <td>{{ $r->status }}</td>
                 <td>{{ $r->manager }}</td>
                 <td>{{ $r->equipment->title }}</td>
+                @if(Auth::user()->role_id == 4)
+                    <td>
+                        @if($r->executor_id == NULL) <!-- Исполнитель еще не назначен -->
+                            <form action="{{ route('requests.accept', $r->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit">Принять</button>
+                            </form>
+                        @elseif($r->executor_id == Auth::user()->id) <!-- Текущий пользователь является исполнителем -->
+                            @if($r->status == 'в работе') <!-- Если работа в процессе -->
+                                <form action="{{ route('requests.complete', $r->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit">Выполнено</button>
+                                </form>
+                                <form action="{{ route('requests.decline', $r->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit">Отказаться</button>
+                                </form>
+                            @elseif($r->status == 'выполнено') <!-- Если работа выполнена -->
+                                <form action="{{ route('requests.markAsNotCompleted', $r->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit">Не выполнено</button>
+                                </form>
+                            @endif
+                        @endif
+                    </td>
+                @endif
                 @if(Auth::user()->role_id == 2)
                     <td>
                         <!-- Форма для изменения исполнителя -->

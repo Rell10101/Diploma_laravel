@@ -110,10 +110,16 @@ class MainController extends Controller
     public function accept($id)
     {
         $request = Requests::find($id);
-        $request->executor = Auth::user()->name; 
+        $request->executor_id = Auth::user()->id; 
         $request->status = 'в работе'; 
         $request->save();
     
+        
+        // $client = User::find($request->client);
+
+        // $client->notify(new EmailNotification('Исполнитель принял вашу заявку на выполнение', url('/request_show/' . $request->id)));
+        
+
         return redirect()->back()->with('success', 'Заявка принята и находится в работе.');
     }
     

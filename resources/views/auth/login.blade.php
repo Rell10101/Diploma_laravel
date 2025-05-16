@@ -1,26 +1,89 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Login</title>
+    <title>Авторизация</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch; 
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+        .input-group {
+            margin-bottom: 1rem;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        .input-group input:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+        .btn {
+            width: 100%;
+            padding: 0.5rem;
+            background:rgb(11, 125, 38);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn:hover {
+            background: #2575fc;
+        }
+    </style>
 </head>
 <body>
-    <h1>Login</h1>
-    <form method="POST" action="{{ route('login') }}">
-        @csrf
-        <div>
-            <label>Email</label>
-            <input type="email" name="email" required>
-        </div>
-        <div>
-            <label>Password</label>
-            <input type="password" name="password" required>
-        </div>
-        <div>
-            <button type="submit">Login</button>
-        </div>
-    </form>
-
-    <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/register">Регистрация</a>
+    <div class="container">
+        <h1>Авторизация</h1>
+        <form method="POST" action="{{ route('login') }}">
+            @csrf
+            <div class="input-group">
+                <label>Эл. почта</label>
+                <input type="email" name="email" required>
+            </div>
+            <div class="input-group">
+                <label>Пароль</label>
+                <input type="password" name="password" required>
+            </div>
+            <div>
+                <button type="submit" class="btn">Войти</button>
+            </div>
+        </form>
+        <br>
+        <br>
+        <label>Ещё нет аккаунта?</label>
+        <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/register">Регистрация</a>
+    </div>
+    
     
     @if ($errors->any())
         <div>
