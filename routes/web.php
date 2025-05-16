@@ -66,3 +66,11 @@ Route::post('/knowledge_base/upload', [KnowledgeBaseController::class, 'store'])
 Route::get('/knowledge_base/{filename}', [KnowledgeBaseController::class, 'show']);
 Route::delete('/knowledge_base/{filename}', [KnowledgeBaseController::class, 'destroy'])->name('files.destroy');
 
+
+
+use App\Http\Controllers\OpenAIController;
+
+Route::post('/openai/response', [OpenAIController::class, 'getResponse']);
+Route::get('/chat_ai', function () {
+    return view('chat_ai');
+});
