@@ -6,6 +6,7 @@ use App\Models\Contact;
 use App\Models\Requests;
 use App\Models\Equipment;
 use App\Models\User;
+use App\Notifications\EmailNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -64,6 +65,10 @@ class MainController extends Controller
         $request->equipment_id = $r->input('equipment_id');
 
         $request->save();
+
+        // Отправка уведомления о новом сообщении
+        $user = Auth::user(); 
+        $user->notify(new EmailNotification('Вы сформировали заявку. Ожидайте, в скором времени её начнут выполнять', url('/request_show')));
 
         return back();
     }
