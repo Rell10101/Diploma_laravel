@@ -30,14 +30,25 @@ Route::get('/profile', [MainController::class, 'profile_show'])->middleware('aut
 
 
 // отправка заявки
+Route::get('/request_type_choice', [MainController::class, "request_type_choice"] );
 Route::get('/request', [MainController::class, "request"] );
+Route::get('/simple_request', [MainController::class, "simple_request"] );
 Route::post('/request/send', [MainController::class, "request_send"] );
+Route::post('/simple_request/send', [MainController::class, "simple_request_send"] );
 
 // действия исполнителя
 Route::post('/requests/{id}/accept', [MainController::class, 'accept'])->name('requests.accept');
 Route::post('/requests/{id}/complete', [MainController::class, 'complete'])->name('requests.complete');
 Route::post('/requests/{id}/decline', [MainController::class, 'decline'])->name('requests.decline');
 Route::post('/requests/{id}/not-completed', [MainController::class, 'markAsNotCompleted'])->name('requests.markAsNotCompleted');
+
+// действия с запросом помощи
+Route::get('/request_show_choice', [MainController::class, "request_show_choice"] );
+Route::get('/simple_request_show', [MainController::class, "simple_request_show"] );
+Route::post('/simple_requests/{id}/complete', [MainController::class, 'simple_requests_complete'])->name('simple_requests_complete');
+Route::delete('/simple_requests/{id}', [MainController::class, 'simple_requests_destroy'])->name('simple_requests_destroy');
+Route::post('/simple_requests/{id}/update-executor', [ManagerController::class, 'updateExecutor'])->name('simple_requests.updateExecutor');
+Route::post('/simple_requests/{id}/accept', [MainController::class, 'simple_requests_accept'])->name('simple_requests_accept');
 
 // удаления заявки
 Route::delete('/requests/{id}', [MainController::class, 'destroy'])->name('requests.destroy');

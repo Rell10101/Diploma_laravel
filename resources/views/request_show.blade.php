@@ -35,7 +35,7 @@
             <th>Статус выполнения</th>
             <th>Менеджер</th>
             <th>Аппаратура</th>
-            @if(Auth::user()->role_id == 4)
+            @if(Auth::user()->role_id == 4 || Auth::user()->role_id == 2)
                 <th>Действия</th>
             @endif
         </tr>

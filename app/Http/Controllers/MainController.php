@@ -6,6 +6,7 @@ use App\Models\Contact;
 use App\Models\Requests;
 use App\Models\Equipment;
 use App\Models\User;
+use App\Models\Simple_request;
 use App\Notifications\EmailNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,18 @@ class MainController extends Controller
 {
     public function home() {
         return view('home');
+    }
+
+    public function request_type_choice() {
+        return view('request_type_choice');
+    }
+
+    public function request_show_choice() {
+        return view('request_show_choice');
+    }
+
+    public function simple_request() {
+        return view('simple_request');
     }
 
     public function request() {
@@ -90,6 +103,48 @@ class MainController extends Controller
         return back();
     }
 
+    public function simple_request_send(Request $r) {
+
+        $valid = $r->validate([
+            'title' => 'required',
+            'deadline' => 'required',
+        ]);
+
+        $request = new Simple_request();
+
+        $request->title = $r->input('title');
+
+        $request->client_id = Auth::user()->id;
+
+        $request->deadline = $r->input('deadline');
+
+        $request->priority = $r->input('priority');
+
+        if ($r->input('executor_id') == null) {
+            $request->executor_id = null;
+        } else {
+            $request->executor_id = $r->input('executor_id');
+        }
+
+        $request->status = 'В ожидании исполнителя';
+
+        $request->save();
+
+        $user = Auth::user(); 
+        $user->notify(new EmailNotification('Вы сформировали заявку. Ожидайте, в скором времени её начнут выполнять', url('/request_show')));
+
+        $executors = User::where('role_id', 4)->get();
+
+        foreach ($executors as $executor) {
+            // Не отправляем уведомление текущему пользователю
+            if ($executor->id !== $user->id) {
+                $executor->notify(new EmailNotification('Появилась новая заявка на оказание помощи', url('/request_show')));
+            }
+        }
+
+        return back();
+    }
+
     public function request_show()
     {
         $user = Auth::user(); 
@@ -106,6 +161,35 @@ class MainController extends Controller
 
         return view('request_show', compact('requests', 'executors'));
     }
+
+    public function simple_request_show()
+    {
+        $user = Auth::user(); 
+
+        $executors = User::where('role_id', 4)->get();
+
+        if ($user->role_id == 3) {
+            $requests = Simple_request::where('client_id', $user->id)->get();
+        } else {
+            //$requests = Requests::with('equipment')->get();
+            $requests = Simple_request::all();
+            //$requests = Requests::all();
+        }
+
+        return view('simple_request_show', compact('requests', 'executors'));
+    }
+
+    public function simple_requests_accept($id)
+    {
+        $request = Simple_request::find($id);
+        $request->executor_id = Auth::user()->id; 
+        $request->status = 'в работе'; 
+        $request->save();
+
+        return redirect()->back()->with('success', 'Заявка принята и находится в работе.');
+    }
+
+    
 
     public function accept($id)
     {
@@ -126,6 +210,15 @@ class MainController extends Controller
     public function complete($id)
     {
         $request = Requests::find($id);
+        $request->status = 'выполнено'; 
+        $request->save();
+    
+        return redirect()->back()->with('success', 'Работа выполнена.');
+    }
+
+    public function simple_requests_complete($id)
+    {
+        $request = Simple_request::find($id);
         $request->status = 'выполнено'; 
         $request->save();
     
@@ -160,6 +253,18 @@ class MainController extends Controller
         $request = Requests::findOrFail($id); 
 
         if (Auth::user()->name == $request->client) {
+            $request->delete();
+            return redirect()->back()->with('success', 'Запись успешно удалена.');
+        } else {
+            return redirect()->back()->with('error', 'У вас нет прав для удаления этой записи.');
+        }
+    }
+
+    public function simple_requests_destroy($id)
+    {
+        $request = Simple_request::findOrFail($id); 
+
+        if (Auth::user()->id == $request->client_id) {
             $request->delete();
             return redirect()->back()->with('success', 'Запись успешно удалена.');
         } else {

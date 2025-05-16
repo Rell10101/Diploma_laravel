@@ -1,0 +1,58 @@
+@auth
+
+@extends('layout') 
+
+@section('title')
+    Отправка заявки
+@endsection
+
+@section('main_content')
+    <h1>Форма отправки заявки на оказание помощи</h1>
+
+    <!-- если есть любая ошибка -->
+    @if($errors->any())
+        <!-- подключение стилей -->
+        <div class="alert alert-danger">
+            <ul>
+                <!-- перебираем все имеющиеся ошибки -->
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach 
+            </ul>
+        </div>
+    @endif
+
+    <form method="post" action="/simple_request/send">
+        @csrf
+        <br>
+        <input type="text" name="title" id="title" placeholder="Введите название заявки" class="form-control"><br>
+        <label>Укажите срок выполнения</label>
+        <input type="datetime-local" id="deadline" name="deadline" class="form-control"><br>
+        <label>Укажите приоритет вашей задачи</label>
+        <select id="priority" name="priority" class="form-control">
+            <option>Малый</option>
+            <option>Средний</option>
+            <option>Высокий</option>
+        </select><br>
+        <br>
+        @if(Auth::user()->role_id == 2)
+            <label for="executor_id">Выбор исполнителя:</label>
+            <select id="executor_id" name="executor_id" class="form-control">
+            @foreach($executors as $item)
+                <option value="{{ $item->id }}">{{ $item->name }}</option>
+            @endforeach
+            </select>
+        @endif
+        <br>
+        <button type="submit" class="btn btn-success">Отправить</button>
+    </form>
+
+@endsection
+@endauth
+
+
+@guest
+    <p>Пожалуйста, войдите в систему, чтобы получить доступ к этому контенту.</p>
+    <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/login">Авторизация</a>
+    <a class="me-3 py-2 link-body-emphasis text-decoration-none" href="/register">Регистрация</a>
+@endguest
