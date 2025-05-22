@@ -40,7 +40,7 @@
             <tr>
                 <td>{{ $r->id }}</td>
                 <td>{{ $r->title }}</td>
-                <td>{{ $r->client_id }}</td>
+                <td>{{ $r->client_id ? $r->client->name : '-' }}</td>
                 <td>{{ $r->deadline }}</td>
                 <td>{{ $r->priority }}</td>
                 <td>{{ $r->executor_id ? $r->executor->name : '-' }}</td>

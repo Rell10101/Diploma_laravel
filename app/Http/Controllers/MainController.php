@@ -26,7 +26,8 @@ class MainController extends Controller
     }
 
     public function simple_request() {
-        return view('simple_request');
+        $clients = User::where('role_id', 3)->get(); 
+        return view('simple_request',  compact('clients'));
     }
 
     public function request() {
