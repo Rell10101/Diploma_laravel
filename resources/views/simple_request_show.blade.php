@@ -74,11 +74,12 @@
                 @if($r->client_id == Auth::user()->id) 
                 <td>
                     @if($r->status != 'выполнено') 
-                    <form action="{{ route('simple_requests_complete', $r->id) }}" method="POST" style="display:inline;">
-                        @csrf
-                        <button type="submit">Выполнено</button>
-                    </form>
-                    
+                        @if($r->executor_id != NULL)
+                        <form action="{{ route('simple_requests_complete', $r->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit">Выполнено</button>
+                        </form>
+                        @endif
                     <form action="{{ route('simple_requests_destroy', $r->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Вы уверены, что хотите удалить эту запись?');">
                         @csrf
                         @method('DELETE')

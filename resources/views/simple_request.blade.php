@@ -27,7 +27,19 @@
         <br>
         <input type="text" name="title" id="title" placeholder="Введите название заявки" class="form-control"><br>
         <label>Укажите срок выполнения</label>
-        <input type="datetime-local" id="deadline" name="deadline" class="form-control"><br>
+
+        <input type="datetime-local" id="deadline" name="deadline" class="form-control">
+        <script>
+        const now = new Date();
+        now.setDate(now.getDate() + 3);
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, '0'); 
+            const day = String(now.getDate()).padStart(2, '0');
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            document.getElementById('deadline').value = `${year}-${month}-${day}T${hours}:${minutes}`;
+        </script><br>
+
         <label>Укажите приоритет вашей задачи</label>
         <select id="priority" name="priority" class="form-control">
             <option>Малый</option>
