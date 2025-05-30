@@ -22,6 +22,24 @@
         </div>
     @endif
 
+    <script>
+$(document).ready(function() {
+    $('#equipment_type').change(function() {
+        var selectedType = $(this).val();
+        
+        // Сброс второго селекта, но оставляем "Другое"
+        $('#problem').empty().append('<option value="Другое">Другое</option>');
+
+        // Фильтрация проблем по выбранному типу оборудования
+        @foreach($problem as $item)
+            if (selectedType == "Все" || "{{ $item->equipment_type_id }}" == selectedType) {
+                $('#problem').append('<option value="{{ $item->problem }}">{{ $item->problem }}</option>');
+            }
+        @endforeach
+    });
+});
+</script>
+
     <form method="post" action="/request/send">
         @csrf
         <br>
@@ -39,6 +57,7 @@
 
         <label for="equipment_type">Вы можете выбрать тип оборудования</label>
             <select id="equipment_type" name="equipment_type" class="select2 form-control">
+            <option value="Все">Все</option>
             @foreach($equipment_type as $item)
                 <option value="{{ $item->id }}">{{ $item->type }}</option>
             @endforeach
