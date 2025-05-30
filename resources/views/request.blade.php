@@ -45,6 +45,19 @@ $(document).ready(function() {
             }
         @endforeach
     });
+
+    $('#location').change(function() {
+        var selectedLocation = $(this).val();
+        
+        $('#equipment_id').empty();
+
+        @foreach($equipment as $item)
+            if (selectedLocation == "Все" || "{{ $item->location_id }}" == selectedLocation) {
+                $('#equipment_id').append('<option value="{{ $item->id }}">{{ $item->title }}</option>');
+            }
+        @endforeach
+
+    });
 });
 </script>
 
@@ -56,9 +69,10 @@ $(document).ready(function() {
 
          <label for="location">Выбор места нахождения оборудования</label>
             <select id="location" name="location" class="select2 form-control">
-            @foreach($location as $item)
-                <option value="{{ $item->title }}">{{ $item->title . " " . $item->type}}</option>
-            @endforeach
+                <option value="Все">Все</option>
+                @foreach($location as $item)
+                    <option value="{{ $item->title }}">{{ $item->title . " " . $item->type}}</option>
+                @endforeach
             </select>
         <br>
         <br>
