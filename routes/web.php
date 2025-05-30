@@ -57,6 +57,9 @@ Route::delete('/requests/{id}', [MainController::class, 'destroy'])->name('reque
 Route::post('/requests/{id}/check', [ManagerController::class, 'check'])->name('requests.check');
 Route::post('/requests/{id}/mark-checked', [ManagerController::class, 'markAsChecked'])->name('requests.markChecked');
 Route::post('/requests/{id}/update-executor', [ManagerController::class, 'updateExecutor'])->name('requests.updateExecutor');
+Route::post('/requests/{id}/requests_updateDeadline', [ManagerController::class, 'requests_updateDeadline'])->name('requests_updateDeadline');
+Route::post('/requests/{id}/requests_updatePriority', [ManagerController::class, 'requests_updatePriority'])->name('requests_updatePriority');
+
 
 
 // действия администратора

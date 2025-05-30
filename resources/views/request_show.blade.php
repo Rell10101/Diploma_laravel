@@ -35,9 +35,7 @@
             <th>Статус выполнения</th>
             <th>Менеджер</th>
             <th>Аппаратура</th>
-            @if(Auth::user()->role_id == 4 || Auth::user()->role_id == 2)
-                <th>Действия</th>
-            @endif
+            <th>Действия</th>
         </tr>
     </thead>
     <tbody>
@@ -47,8 +45,50 @@
                 <td>{{ $r->title }}</td>
                 <td>{{ $r->description }}</td>
                 <td>{{ $r->client }}</td>
-                <td>{{ $r->deadline }}</td>
-                <td>{{ $r->priority }}</td>
+                <td>
+                    @if($r->deadline)
+                        {{ $r->deadline }}
+                    @else @if(Auth::user()->role_id == 2)
+                    <!-- Форма для изменения исполнителя -->
+                        <form action="{{ route('requests_updateDeadline', $r->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <!-- <select name="deadline">
+                                <option value="">Выберите срок выполнения</option>
+                                @foreach($executors as $executor)
+                                    <option value="{{ $executor->id }}" {{ $r->executor_id == $executor->id ? 'selected' : '' }}>
+                                        {{ $executor->name }}
+                                    </option>
+                                @endforeach
+                            </select> -->
+                            <input type="datetime-local" id="deadline" name="deadline" class="form-control">
+                            <br>
+                            <br>
+                            <button type="submit">Установить срок</button>
+                        </form>
+                        @endif
+                    @endif
+                </td>
+
+                <td>@if($r->priority)
+                        {{ $r->priority }}
+                    @else 
+                        @if(Auth::user()->role_id == 2)
+                        <form action="{{ route('requests_updatePriority', $r->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <label>Укажите приоритет задачи</label>
+                            <br>
+                            <select id="priority" name="priority" class="form-control">
+                                <option>Малый</option>
+                                <option>Средний</option>
+                                <option>Высокий</option>
+                            </select>
+                            <br>
+                            <button type="submit">Установить приоритет</button>
+                        </form>
+                        @endif
+                    @endif
+                </td>
+
                 <td>{{ $r->executor ? $r->executor->name : '-' }}</td>
                 <td>{{ $r->status }}</td>
                 <td>{{ $r->manager }}</td>
@@ -61,11 +101,13 @@
                                 <button type="submit">Принять</button>
                             </form>
                         @elseif($r->executor_id == Auth::user()->id) <!-- Текущий пользователь является исполнителем -->
-                            @if($r->status == 'в работе') <!-- Если работа в процессе -->
+                            @if($r->status == 'В работе') <!-- Если работа в процессе -->
                                 <form action="{{ route('requests.complete', $r->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     <button type="submit">Выполнено</button>
                                 </form>
+                                <br>
+                                <br>
                                 <form action="{{ route('requests.decline', $r->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     <button type="submit">Отказаться</button>
@@ -92,6 +134,10 @@
                                     </option>
                                 @endforeach
                             </select>
+                            <!-- <input type="datetime-local" id="deadline" name="deadline" class="form-control">
+                             -->
+                            <br>
+                            <br>
                             <button type="submit">Изменить исполнителя</button>
                         </form>
                     </td>

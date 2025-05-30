@@ -34,7 +34,7 @@ class ManagerController extends Controller
     }
 
     public function updateExecutor(Request $request, $id)
-{
+    {
     // Валидация входящих данных
     $request->validate([
         'executor_id' => 'required|exists:users,id', // Убедитесь, что выбранный исполнитель существует
@@ -48,11 +48,42 @@ class ManagerController extends Controller
     
     $requestToUpdate->status = 'В работе';
 
+    //$requestToUpdate->deadline = $request->deadline;
+
     // Сохраните изменения
     $requestToUpdate->save();
 
     // Перенаправьте пользователя обратно на страницу с сообщением об успешном обновлении
     return redirect()->route('requests.request_show')->with('success', 'Исполнитель успешно изменен.');
-}
+    }
+
+    
+    public function requests_updateDeadline(Request $request, $id) {
+        // Валидация входящих данных
+        // $request->validate([
+        //     'deadline' => 'required|exists:users,id', // Убедитесь, что выбранный исполнитель существует
+        // ]);
+
+        // Найдите заявку по ID
+        $requestToUpdate = Requests::findOrFail($id);
+    
+        // Обновите ID исполнителя
+        $requestToUpdate->deadline = $request->deadline;
+
+        $requestToUpdate->save();
+
+        return redirect()->route('requests.request_show');
+    }
+
+     public function requests_updatePriority(Request $request, $id) {
+        $requestToUpdate = Requests::findOrFail($id);
+    
+        // Обновите ID исполнителя
+        $requestToUpdate->priority = $request->priority;
+
+        $requestToUpdate->save();
+
+        return redirect()->route('requests.request_show');
+     }
 
 }

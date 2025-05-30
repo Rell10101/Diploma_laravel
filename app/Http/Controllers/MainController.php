@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Contact;
 use App\Models\Requests;
 use App\Models\Equipment;
+use App\Models\Equipment_type;
+use App\Models\Problems;
+use App\Models\Locations;
 use App\Models\User;
 use App\Models\Simple_request;
 use App\Notifications\EmailNotification;
+use App\Events\BrowserNotifications;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -32,27 +36,36 @@ class MainController extends Controller
 
     public function request() {
         //return view('request');
-        $equipment = Equipment::all(); // Получаем все элементы из таблицы
+        $equipment = Equipment::all(); 
 
-        // Загрузка пользователей с ролью исполнителя
-        $executors = User::where('role_id', 4)->get(); // Предполагаем, что роль исполнителя имеет ID 2
+        $equipment_type = Equipment_type::all(); 
 
-        return view('request', compact('equipment', 'executors')); // Передаем данные в представление
+        $problem = Problems::all(); 
+
+        $location = Locations::all(); 
+
+        $executors = User::where('role_id', 4)->get();
+
+        return view('request', compact('equipment', 'equipment_type', 'executors', 'problem', 'location')); 
+
     }
 
     public function request_send(Request $r) {
 
         $valid = $r->validate([
-            'title' => 'required',
+            //'title' => 'required',
+            //'equipment_type' => 'required',
+            'problem' => 'required',
             //'description' => 'required',
-            'deadline' => 'required',
+            //'deadline' => 'required',
             //'priority' => 'required',
             //'equipment_id' => 'required',
         ]);
 
         $request = new Requests();
 
-        $request->title = $r->input('title');
+        //$request->title = $r->input('title');
+        $request->title = $r->input('problem');
 
         if ($r->input('description') == null) {
             $request->description = '-';
@@ -65,7 +78,17 @@ class MainController extends Controller
 
         $request->deadline = $r->input('deadline');
 
+        // if ($r->input('deadline') == '') {
+        //     $request->deadline = '';
+        // }
+        
         $request->priority = $r->input('priority');
+        // if ($request->priority === 'не выбрано') {
+        //     // Логика для случая, когда ничего не выбрано
+        // } else {
+        //     // Логика для случая, когда выбрана опция
+        // }
+
 
         if ($r->input('executor') == null) {
             $request->executor_id = null;
@@ -82,7 +105,8 @@ class MainController extends Controller
 
         $user = Auth::user(); 
         $user->notify(new EmailNotification('Вы сформировали заявку. Ожидайте, в скором времени её начнут выполнять', url('/request_show')));
-
+        event(new BrowserNotifications('Это информационное уведомление.', 'info', 'Информация'));
+        \Log::info('Событие BrowserNotifications вызвано');
 
         $executors = User::where('role_id', 4)->get();
         $managers = User::where('role_id', 2)->get();
@@ -154,7 +178,10 @@ class MainController extends Controller
 
         if ($user->role_id == 3) {
             $requests = Requests::where('client', $user->name)->get();
-        } else {
+        } elseif(($user->role_id == 4)) {
+            $requests = Requests::where('executor_id', $user->id)->get();
+        }
+        else {
             //$requests = Requests::with('equipment')->get();
             $requests = Requests::with(['equipment'])->get();
             //$requests = Requests::all();
@@ -196,7 +223,7 @@ class MainController extends Controller
     {
         $request = Requests::find($id);
         $request->executor_id = Auth::user()->id; 
-        $request->status = 'в работе'; 
+        $request->status = 'В работе'; 
         $request->save();
     
         
@@ -211,7 +238,7 @@ class MainController extends Controller
     public function complete($id)
     {
         $request = Requests::find($id);
-        $request->status = 'выполнено'; 
+        $request->status = 'Выполнено'; 
         $request->save();
     
         return redirect()->back()->with('success', 'Работа выполнена.');
@@ -220,7 +247,7 @@ class MainController extends Controller
     public function simple_requests_complete($id)
     {
         $request = Simple_request::find($id);
-        $request->status = 'выполнено'; 
+        $request->status = 'Выполнено'; 
         $request->save();
     
         return redirect()->back()->with('success', 'Работа выполнена.');
@@ -229,7 +256,7 @@ class MainController extends Controller
     public function markAsNotCompleted($id)
     {
         $request = Requests::find($id);
-        $request->status = 'в работе'; 
+        $request->status = 'В работе'; 
         $request->save();
 
         return redirect()->back()->with('success', 'Работа помечена как не выполненная.');
@@ -239,9 +266,9 @@ class MainController extends Controller
     {
         $request = Requests::find($id);
 
-        if ($request && $request->executor == Auth::user()->name) {
-            $request->executor = '-'; 
-            $request->status = 'ожидает исполнителя'; 
+        if ($request && $request->executor_id == Auth::user()->id) {
+            $request->executor_id = NULL; 
+            $request->status = 'В ожидании исполнителя'; 
             $request->save();
             return redirect()->back()->with('success', 'Вы отказались от выполнения заявки.');
         }
