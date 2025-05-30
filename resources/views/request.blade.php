@@ -22,18 +22,26 @@
         </div>
     @endif
 
-    <script>
+<script>
 $(document).ready(function() {
     $('#equipment_type').change(function() {
         var selectedType = $(this).val();
         
         // Сброс второго селекта, но оставляем "Другое"
         $('#problem').empty().append('<option value="Другое">Другое</option>');
+        $('#equipment_id').empty();
 
         // Фильтрация проблем по выбранному типу оборудования
         @foreach($problem as $item)
             if (selectedType == "Все" || "{{ $item->equipment_type_id }}" == selectedType) {
                 $('#problem').append('<option value="{{ $item->problem }}">{{ $item->problem }}</option>');
+            }
+        @endforeach
+
+        // Фильтрация оборудования по выбранному типу оборудования
+        @foreach($equipment as $item)
+            if (selectedType == "Все" || "{{ $item->equipment_type_id }}" == selectedType) {
+                $('#equipment_id').append('<option value="{{ $item->id }}">{{ $item->title }}</option>');
             }
         @endforeach
     });
