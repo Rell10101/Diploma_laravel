@@ -267,13 +267,13 @@ class MainController extends Controller
         $request = Requests::find($id);
 
         if ($request && $request->executor_id == Auth::user()->id) {
-            $request->executor_id = NULL; 
-            $request->status = 'В ожидании исполнителя'; 
+            //$request->executor_id = NULL; 
+            $request->status = 'Не удаётся выполнить'; 
             $request->save();
-            return redirect()->back()->with('success', 'Вы отказались от выполнения заявки.');
+            return redirect()->back();
         }
 
-        return redirect()->back()->with('error', 'Не удалось отказаться от заявки.');
+        return redirect()->back();
     }
 
     public function destroy($id)

@@ -29,36 +29,40 @@
          -->
 
          <label for="location">Выбор места нахождения оборудования</label>
-            <select id="location" name="location" class="form-control">
+            <select id="location" name="location" class="select2 form-control">
             @foreach($location as $item)
                 <option value="{{ $item->title }}">{{ $item->title . " " . $item->type}}</option>
             @endforeach
             </select>
         <br>
+        <br>
 
         <label for="equipment_type">Вы можете выбрать тип оборудования</label>
-            <select id="equipment_type" name="equipment_type" class="form-control">
+            <select id="equipment_type" name="equipment_type" class="select2 form-control">
             @foreach($equipment_type as $item)
                 <option value="{{ $item->id }}">{{ $item->type }}</option>
             @endforeach
             </select>
         <br>
+        <br>
 
         <label for="equipment_id">Выберите оборудование:</label>
-        <select id="equipment_id" name="equipment_id" class="form-control">
+        <select class="select2 form-control" id="equipment_id" name="equipment_id">
             @foreach($equipment as $item)
                 <option value="{{ $item->id }}">{{ $item->title }}</option>
             @endforeach
         </select>
         <br>
+        <br>
 
         <label for="problem">Укажите проблему: <span class="required">*</span></label>
-        <select id="problem" name="problem" class="form-control">
+        <select id="problem" name="problem" class="select2 form-control">
             <option value="Другое">{{ "Другое" }}</option>
             @foreach($problem as $item)
                 <option value="{{ $item->problem }}">{{ $item->problem }}</option>
             @endforeach
         </select>
+        <br>
         <br>
 
         <textarea name="description" id="description" placeholder="Введите подробное описание (необязательное поле)" class="form-control" rows="10" cols="30"></textarea><br>

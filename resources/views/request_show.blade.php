@@ -110,14 +110,24 @@
                                 <br>
                                 <form action="{{ route('requests.decline', $r->id) }}" method="POST" style="display:inline;">
                                     @csrf
-                                    <button type="submit">Отказаться</button>
+                                    <button type="submit">Не могу выполнить</button>
                                 </form>
-                            @elseif($r->status == 'выполнено') <!-- Если работа выполнена -->
+                            @elseif($r->status == 'Выполнено')
                                 <form action="{{ route('requests.markAsNotCompleted', $r->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     <button type="submit">Не выполнено</button>
                                 </form>
                             @endif
+
+                            @if($r->status == 'Не удаётся выполнить') <!-- Если работа в процессе -->
+                                <form action="{{ route('requests.accept', $r->id) }}" method="POST" style="display:inline;">
+                                    @csrf
+                                    <button type="submit">Продолжить выполнение</button>
+                                </form>
+                                <br>
+                                <br>
+                            @endif
+                            
                         @endif
                     </td>
                 @endif
