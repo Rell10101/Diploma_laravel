@@ -9,6 +9,7 @@ use App\Models\Equipment_type;
 use App\Models\Problems;
 use App\Models\Locations;
 use App\Models\User;
+use App\Models\Comment;
 use App\Models\Simple_request;
 use App\Notifications\EmailNotification;
 use App\Events\BrowserNotifications;
@@ -189,6 +190,16 @@ class MainController extends Controller
 
         return view('request_show', compact('requests', 'executors'));
     }
+
+    public function request_full($id)
+    {
+        $request = Requests::findOrFail($id); // Получаем заявку по ID
+        $comments = Comment::where('request_id', $id)
+                       ->orderBy('created_at', 'desc') // Сортируем по времени создания в обратном порядке
+                       ->get(); // Получаем комментарии для этой заявки
+        return view('request_full', compact('request', 'comments')); // Передаем данные в представление
+    }
+
 
     public function simple_request_show()
     {

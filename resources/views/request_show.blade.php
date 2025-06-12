@@ -9,6 +9,38 @@
 @section('main_content')
     <h1>Просмотр заявок</h1>
 
+
+    <style>
+    .card-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px; /* Отступы между карточками */
+    }
+
+.card {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 16px;
+    width: 1300px; /* Ширина карточки */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.card-header {
+    border-bottom: 1px solid #eee;
+    margin-bottom: 10px;
+}
+
+.card-body {
+    margin-bottom: 10px;
+}
+
+.card-footer {
+    display: flex;
+    justify-content: space-between; /* Распределение кнопок */
+}
+</style>
+
     <!-- если есть любая ошибка -->
     @if($errors->any())
         <!-- подключение стилей -->
@@ -22,7 +54,120 @@
         </div>
     @endif
 
-    <table>
+
+    <div class="card-container">
+    @foreach ($requests as $r)
+        <div class="card">
+            <div class="card-header">
+                <h2><a href="{{ route('request_full', ['id' => $r->id]) }}">{{ $r->title }}</a></h2>
+                <!-- <p>ID: {{ $r->id }}</p> -->
+            </div>
+            <div class="card-body">
+                <!-- <p><strong>Описание:</strong> {{ $r->description }}</p> -->
+                <p><strong>Клиент:</strong> {{ $r->client }}</p>
+                <p><strong>Срок выполнения:</strong> 
+                    @if($r->deadline)
+                        {{ $r->deadline }}
+                    @else
+                        <!-- @if(Auth::user()->role_id == 2)
+                            <form action="{{ route('requests_updateDeadline', $r->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <input type="datetime-local" id="deadline" name="deadline" class="form-control">
+                                <button type="submit">Установить срок</button>
+                            </form>
+                        @endif -->
+                    @endif
+                </p>
+                <p><strong>Приоритет:</strong> 
+                    @if($r->priority)
+                        {{ $r->priority }}
+                    @else 
+                        <!-- @if(Auth::user()->role_id == 2)
+                            <form action="{{ route('requests_updatePriority', $r->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <select id="priority" name="priority" class="form-control">
+                                    <option>Малый</option>
+                                    <option>Средний</option>
+                                    <option>Высокий</option>
+                                </select>
+                                <button type="submit">Установить приоритет</button>
+                            </form>
+                        @endif -->
+                    @endif
+                </p>
+                <p><strong>Исполнитель:</strong> {{ $r->executor ? $r->executor->name : '-' }}</p>
+                <p><strong>Статус выполнения:</strong> {{ $r->status }}</p>
+                <!-- <p><strong>Менеджер:</strong> {{ $r->manager }}</p> -->
+                <p><strong>Аппаратура:</strong> {{ $r->equipment->title }}</p>
+            </div>
+            <!-- <div class="card-footer">
+                @if(Auth::user()->role_id == 4)
+                    @if($r->executor_id == NULL)
+                                                <form action="{{ route('requests.accept', $r->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit">Принять</button>
+                        </form>
+                    @elseif($r->executor_id == Auth::user()->id)
+                        @if($r->status == 'В работе')
+                            <form action="{{ route('requests.complete', $r->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit">Выполнено</button>
+                            </form>
+                            <form action="{{ route('requests.decline', $r->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit">Не могу выполнить</button>
+                            </form>
+                        @elseif($r->status == 'Выполнено')
+                            <form action="{{ route('requests.markAsNotCompleted', $r->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit">Не выполнено</button>
+                            </form>
+                        @endif
+                    @endif
+                @endif
+                @if(Auth::user()->role_id == 2)
+                    <form action="{{ route('requests.updateExecutor', $r->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <select name="executor_id">
+                            <option value="">Выберите исполнителя</option>
+                            @foreach($executors as $executor)
+                                <option value="{{ $executor->id }}" {{ $r->executor_id == $executor->id ? 'selected' : '' }}>
+                                    {{ $executor->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button type="submit">Изменить исполнителя</button>
+                    </form>
+                @endif
+                @if($r->client == Auth::user()->name) 
+                    <form action="{{ route('requests.destroy', $r->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Вы уверены, что хотите удалить эту запись?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Отозвать заявку</button>
+                    </form>
+                @endif
+                @if(Auth::user()->role_id == 2)
+                    @if($r->status == 'выполнено')
+                        <form action="{{ route('requests.check', $r->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit">Проверить</button>
+                        </form>
+                    @elseif($r->status == 'проверка')
+                        <form action="{{ route('requests.markChecked', $r->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit">Проверено</button>
+                        </form>
+                    @endif
+                @endif
+            </div> -->
+        </div>
+    @endforeach
+</div>
+
+
+
+
+    <!-- <table>
     <thead>
         <tr>
             <th>ID</th>
@@ -179,7 +324,9 @@
             </tr>
         @endforeach
     </tbody>
-</table>
+</table> -->
+
+
 
 
 

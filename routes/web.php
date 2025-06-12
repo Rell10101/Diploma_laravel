@@ -5,6 +5,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\ManagerController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\KnowledgeBaseController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\LoginController;
@@ -68,6 +69,11 @@ Route::post('/users/{id}/role_id', [AdminController::class, 'updateRole'])->name
 
 // показ заявок
 Route::get('/request_show', [MainController::class, 'request_show'])->name('requests.request_show');
+Route::get('/request_full/{id}', [MainController::class, 'request_full'])->name('request_full');
+// комментарии к заявкам
+Route::post('requests/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
+Route::get('requests/{id}/comments', [CommentController::class, 'show'])->name('comments.show');
+
 
 // чат-бот
 Route::get('/chat', [ChatController::class, 'chat'])->name('chat');

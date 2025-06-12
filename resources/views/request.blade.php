@@ -71,7 +71,7 @@ $(document).ready(function() {
             <select id="location" name="location" class="select2 form-control">
                 <option value="Все">Все</option>
                 @foreach($location as $item)
-                    <option value="{{ $item->title }}">{{ $item->title . " " . $item->type}}</option>
+                    <option value="{{ $item->id }}">{{ $item->title . " " . $item->type}}</option>
                 @endforeach
             </select>
         <br>
@@ -105,7 +105,7 @@ $(document).ready(function() {
         </select>
         <br>
         <br>
-
+        <br>
         <textarea name="description" id="description" placeholder="Введите подробное описание (необязательное поле)" class="form-control" rows="10" cols="30"></textarea><br>
          <!-- Скрытое поле для логина пользователя 
         <input type="hidden" name="client" id="client" value="{{ Auth::user()->name }}">-->
