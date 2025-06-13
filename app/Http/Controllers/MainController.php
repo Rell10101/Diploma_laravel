@@ -178,7 +178,7 @@ class MainController extends Controller
         $executors = User::where('role_id', 4)->get();
 
         if ($user->role_id == 3) {
-            $requests = Requests::where('client', $user->name)->get();
+            $requests = Requests::where('client', $user->name)->orderBy('id', 'desc') ->get();
         } elseif(($user->role_id == 4)) {
             $requests = Requests::where('executor_id', $user->id)->get();
         }
@@ -190,6 +190,36 @@ class MainController extends Controller
 
         return view('request_show', compact('requests', 'executors'));
     }
+
+    public function filter(Request $request)
+    {
+    $query = Requests::with('equipment');;
+
+    // Фильтрация по клиенту
+    if ($request->has('client') && $request->client != '') {
+        $query->where('client', 'like', '%' . $request->client . '%');
+    }
+
+    // Фильтрация по статусу
+    if ($request->has('status') && $request->status != '') {
+        $query->where('status', $request->status);
+    }
+
+    // Сортировка
+    if ($request->has('sort_by')) {
+        $query->orderBy($request->sort_by, $request->sort_order);
+    }
+
+    $requests = $query->get();
+
+    // Отладка: проверьте, что возвращаются данные
+    if ($requests->isEmpty()) {
+        return response()->json(['message' => 'Нет заявок'], 204); // Возвращаем статус 204, если нет данных
+    }
+
+    return response()->json($requests);
+}
+
 
     public function request_full($id)
     {
@@ -317,4 +347,10 @@ class MainController extends Controller
         return view('profile', compact('user')); 
     }
 
+
+    public function equipment_show()
+    {
+        $equipment = Equipment::all(); 
+        return view('equipment_show', compact('equipment')); 
+    }
 }

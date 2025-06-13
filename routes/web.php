@@ -69,11 +69,14 @@ Route::post('/users/{id}/role_id', [AdminController::class, 'updateRole'])->name
 
 // показ заявок
 Route::get('/request_show', [MainController::class, 'request_show'])->name('requests.request_show');
+Route::get('/request_show/filter', [MainController::class, 'filter'])->name('request_filter');
 Route::get('/request_full/{id}', [MainController::class, 'request_full'])->name('request_full');
 // комментарии к заявкам
 Route::post('requests/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::get('requests/{id}/comments', [CommentController::class, 'show'])->name('comments.show');
 
+// показ оборудования
+Route::get('/equipment_show', [MainController::class, 'equipment_show'])->name('equipment_show');
 
 // чат-бот
 Route::get('/chat', [ChatController::class, 'chat'])->name('chat');
