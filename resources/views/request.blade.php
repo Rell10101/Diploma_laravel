@@ -61,7 +61,7 @@ $(document).ready(function() {
 });
 </script>
 
-    <form method="post" action="/request/send">
+    <form method="post" action="/request/send" enctype="multipart/form-data">
         @csrf
         <br>
         <!-- <input type="text" name="title" id="title" placeholder="Введите название заявки" class="form-control"><br>
@@ -138,6 +138,10 @@ $(document).ready(function() {
             @endforeach
             </select>
         @endif
+        <br>
+        <label for="photos">Загрузите фотографии:</label>
+        <input type="file" name="photos[]" id="photos" multiple required>
+        <br>
         <br>
         <button type="submit" class="btn btn-success">Отправить</button>
     </form>

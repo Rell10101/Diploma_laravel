@@ -8,6 +8,19 @@ class Requests extends Model
 {
     public $timestamps = false;
 
+    protected $fillable = [
+        'title',
+        'description',
+        'client',
+        'deadline',
+        'priority',
+        'executor_id',
+        'status',
+        'manager',
+        'equipment_id',
+        'photos', 
+    ];
+
     public function equipment()
     {
         return $this->belongsTo(Equipment::class, 'equipment_id');

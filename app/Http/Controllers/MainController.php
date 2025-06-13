@@ -54,53 +54,38 @@ class MainController extends Controller
     public function request_send(Request $r) {
 
         $valid = $r->validate([
-            //'title' => 'required',
-            //'equipment_type' => 'required',
             'problem' => 'required',
-            //'description' => 'required',
-            //'deadline' => 'required',
-            //'priority' => 'required',
-            //'equipment_id' => 'required',
+            'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         $request = new Requests();
 
-        //$request->title = $r->input('title');
         $request->title = $r->input('problem');
 
-        if ($r->input('description') == null) {
-            $request->description = '-';
-        } else {
-            $request->description = $r->input('description');
-        }
+        $request->description = $r->input('description') ?? '-';
 
         $request->client = Auth::user()->name;
-        //$request->client = $r->input('client'); 
-
         $request->deadline = $r->input('deadline');
-
-        // if ($r->input('deadline') == '') {
-        //     $request->deadline = '';
-        // }
-        
         $request->priority = $r->input('priority');
-        // if ($request->priority === 'не выбрано') {
-        //     // Логика для случая, когда ничего не выбрано
-        // } else {
-        //     // Логика для случая, когда выбрана опция
-        // }
 
-
-        if ($r->input('executor') == null) {
-            $request->executor_id = null;
-        } else {
-            $request->executor_id = $r->input('executor');
-        }
-        //$request->executor = '-';
+        $request->executor_id = $r->input('executor') ?? null;
 
         $request->status = 'В ожидании исполнителя';
         $request->manager = '-';
         $request->equipment_id = $r->input('equipment_id');
+
+        // Обработка загруженных фотографий
+        $filenames = [];
+        if ($r->hasFile('photos')) {
+            foreach ($r->file('photos') as $file) {
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension(); // Генерация уникального имени файла
+                $file->move(public_path('uploads'), $filename); // Перемещение файла в папку uploads
+                $filenames[] = $filename; // Добавление имени файла в массив
+            }
+        }
+
+        // Сохранение массива имен файлов в формате JSON
+        $request->photos = json_encode($filenames);
 
         $request->save();
 
