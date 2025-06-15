@@ -212,7 +212,8 @@ class MainController extends Controller
         $comments = Comment::where('request_id', $id)
                        ->orderBy('created_at', 'desc') // Сортируем по времени создания в обратном порядке
                        ->get(); // Получаем комментарии для этой заявки
-        return view('request_full', compact('request', 'comments')); // Передаем данные в представление
+        $executors = User::where('role_id', 4)->get();
+        return view('request_full', compact('request', 'comments', 'executors')); // Передаем данные в представление
     }
 
 

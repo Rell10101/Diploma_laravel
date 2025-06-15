@@ -93,13 +93,82 @@
         <p><strong>ID:</strong> {{ $request->id }}</p>
         <p><strong>Описание:</strong> {{ $request->description }}</p>
         <p><strong>Клиент:</strong> {{ $request->client }}</p>
-        <p><strong>Срок выполнения:</strong> {{ $request->deadline ?? 'Не установлен' }}</p>
-        <p><strong>Приоритет:</strong> {{ $request->priority ?? 'Не установлен' }}</p>
+        <p><strong>Срок выполнения:</strong> 
+                    @if($request->deadline)
+                        {{ $request->deadline }}
+                    @else
+                        @if(Auth::user()->role_id == 2)
+                            <form action="{{ route('requests_updateDeadline', $request->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <input type="datetime-local" id="deadline" name="deadline" class="form-control">
+                                <br>
+                                <button type="submit">Установить срок</button>
+                            </form>
+                        @endif
+                    @endif
+                </p>
+        <p><strong>Приоритет:</strong> 
+                    @if($request->priority)
+                        {{ $request->priority }}
+                    @else 
+                        @if(Auth::user()->role_id == 2)
+                            <form action="{{ route('requests_updatePriority', $request->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <select id="priority" name="priority" class="form-control">
+                                    <option>Малый</option>
+                                    <option>Средний</option>
+                                    <option>Высокий</option>
+                                </select>
+                                <br>
+                                <button type="submit">Установить приоритет</button>
+                            </form>
+                        @endif
+                    @endif
+                </p>
         <p><strong>Исполнитель:</strong> {{ $request->executor ? $request->executor->name : '-' }}</p>
+        @if(Auth::user()->role_id == 2)
+                    <form action="{{ route('requests.updateExecutor', $request->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <select name="executor_id">
+                            <option value="">Выберите исполнителя</option>
+                            @foreach($executors as $executor)
+                                <option value="{{ $executor->id }}" {{ $request->executor_id == $executor->id ? 'selected' : '' }}>
+                                    {{ $executor->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                        <button type="submit">Изменить исполнителя</button>
+                    </form>
+                @endif
         <p><strong>Статус выполнения:</strong> {{ $request->status }}</p>
         <p><strong>Менеджер:</strong> {{ $request->manager }}</p>
         <p><strong>Аппаратура:</strong> {{ $request->equipment->title }}</p>
-
+        @if(Auth::user()->role_id == 4)
+                    @if($request->executor_id == NULL)
+                                                <form action="{{ route('requests.accept', $request->id) }}" method="POST" style="display:inline;">
+                            @csrf
+                            <button type="submit">Принять</button>
+                        </form>
+                    @elseif($request->executor_id == Auth::user()->id)
+                        @if($request->status == 'В работе')
+                            <form action="{{ route('requests.complete', $request->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit">Выполнено</button>
+                            </form>
+                            <form action="{{ route('requests.decline', $request->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit">Не могу выполнить</button>
+                            </form>
+                            <br>
+                        @elseif($r->status == 'Выполнено')
+                            <form action="{{ route('requests.markAsNotCompleted', $request->id) }}" method="POST" style="display:inline;">
+                                @csrf
+                                <button type="submit">Не выполнено</button>
+                            </form>
+                        @endif
+                    @endif
+                @endif
+        <br>
         <a href="{{ route('requests.request_show') }}">Назад к списку заявок</a>
 
         

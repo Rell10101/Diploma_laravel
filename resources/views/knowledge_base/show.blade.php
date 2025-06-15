@@ -22,7 +22,7 @@
     @endif
 
 
-    <h1>{{ $filename }}</h1>
+    <h1>{{ pathinfo($filename, PATHINFO_FILENAME) }}</h1>
     <pre>{{ $content }}</pre>
     <a href="{{ url('/knowledge_base') }}">Назад к списку</a>
 

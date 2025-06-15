@@ -31,7 +31,7 @@
     <ul>
     @foreach ($files as $file)
         <li>
-            <a href="{{ url('/knowledge_base/' . $file) }}">{{ $file }}</a>
+            <a href="{{ url('/knowledge_base/' . $file) }}">{{ pathinfo($file, PATHINFO_FILENAME) }}</a>
             <form action="{{ route('files.destroy', $file) }}" method="POST" style="display:inline;">
                 @csrf
                 @method('DELETE')

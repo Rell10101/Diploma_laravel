@@ -54,7 +54,7 @@ class ManagerController extends Controller
     $requestToUpdate->save();
 
     // Перенаправьте пользователя обратно на страницу с сообщением об успешном обновлении
-    return redirect()->route('requests.request_show')->with('success', 'Исполнитель успешно изменен.');
+    return redirect()->back();
     }
 
     
@@ -72,7 +72,7 @@ class ManagerController extends Controller
 
         $requestToUpdate->save();
 
-        return redirect()->route('requests.request_show');
+        return redirect()->back();
     }
 
      public function requests_updatePriority(Request $request, $id) {
@@ -83,7 +83,7 @@ class ManagerController extends Controller
 
         $requestToUpdate->save();
 
-        return redirect()->route('requests.request_show');
+        return redirect()->back();
      }
 
 }

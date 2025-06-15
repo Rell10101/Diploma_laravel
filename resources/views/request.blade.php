@@ -140,7 +140,7 @@ $(document).ready(function() {
         @endif
         <br>
         <label for="photos">Загрузите фотографии:</label>
-        <input type="file" name="photos[]" id="photos" multiple required>
+        <input type="file" name="photos[]" id="photos" multiple>
         <br>
         <br>
         <button type="submit" class="btn btn-success">Отправить</button>
