@@ -79,12 +79,15 @@ $(document).ready(function() {
     <input type="text" id="client" placeholder="Поиск по клиенту">
     <select id="status">
         <option value="">Все статусы</option>
-        <option value="Проверено">Проверено</option>
-        <option value="В работе">В работе</option>
         <option value="В ожидании исполнителя">В ожидании исполнителя</option>
+        <option value="В работе">В работе</option>
+        <option value="Выполнено">Выполнено</option>
+        <option value="Невозможно выполнить">Невозможно выполнить</option>
+        <option value="Проверка">Проверка</option>
+        <option value="Проверено">Проверено</option>
     </select>
     <select id="sort_by">
-        <option value="title">По названию</option>
+        <option value="created_at">По дате создания</option>
         <option value="deadline">По сроку выполнения</option>
     </select>
     <select id="sort_order">

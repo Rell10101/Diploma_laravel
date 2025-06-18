@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Equipment extends Model
 {
+    public $timestamps = false;
+    
     public function location()
     {
         return $this->belongsTo(Locations::class, 'location_id');

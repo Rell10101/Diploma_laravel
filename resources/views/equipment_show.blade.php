@@ -7,9 +7,7 @@
 @endsection
 
 @section('main_content')
-    <h1>Просмотр оборудования</h1>
-
-    <style>
+<style>
     .card-container {
         display: flex;
         flex-wrap: wrap;
@@ -38,7 +36,30 @@
         display: flex;
         justify-content: space-between; /* Распределение кнопок */
     }
+
+        .button_eq_add {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: white;
+            background-color: #5cb85c; 
+            border: none;
+            border-radius: 5px; 
+            text-decoration: none; 
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .button_eq_add:hover {
+            background-color: #0056b3; /* Цвет фона при наведении */
+        }
 </style>
+
+    <h1>Просмотр оборудования</h1>
+
+    @if(Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
+        <a href="/equipment_add_show" class="button_eq_add">Добавить новое оборудование</a>
+    @endif
 
     <div class="card-container" id="equipment-list">
         @foreach ($equipment as $eq)

@@ -93,6 +93,8 @@ Route::get('/report', [MainController::class, 'report'])->name('report');
 
 // показ оборудования
 Route::get('/equipment_show', [MainController::class, 'equipment_show'])->name('equipment_show');
+Route::get('/equipment_add_show', [MainController::class, 'equipment_add_show'])->name('equipment_add_show');
+Route::post('/equipment_add/send', [MainController::class, 'equipment_add'])->name('equipment_add');
 
 // чат-бот
 // Route::get('/chat', [ChatController::class, 'chat'])->name('chat');

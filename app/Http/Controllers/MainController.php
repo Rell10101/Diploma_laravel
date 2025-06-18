@@ -260,8 +260,10 @@ public function deletePhoto($id, $photo)
         $statusColors = [
             'В ожидании исполнителя' => 'rgb(255, 165, 0)', 
             'В работе' => 'rgb(65, 105, 225)', 
-            'Выполнено' => 'rgb(0, 128, 0)', 
-            'проверено' => 'rgb(0, 128, 0)', 
+            'Невозможно выполнить' => 'rgb(182, 56, 56)', 
+            'Выполнено' => 'rgb(65, 105, 225)', 
+            'Проверка' => 'rgb(65, 105, 225)', 
+            'Проверено' => 'rgb(0, 128, 0)', 
         ];
 
         return view('request_show', compact('requests', 'executors', 'statusColors'));
@@ -442,6 +444,43 @@ public function deletePhoto($id, $photo)
         $equipment = Equipment::all(); 
         return view('equipment_show', compact('equipment')); 
     }
+
+    public function equipment_add_show()
+    {
+        $equipment = Equipment::all(); 
+        $locations = Locations::all();
+        $equipment_type = Equipment_type::all();
+
+        return view('equipment_add', compact('equipment', 'locations', 'equipment_type')); 
+    }
+
+    public function equipment_add(Request $r)
+    {
+        $valid = $r->validate([
+            'location' => 'required',
+            'equipment_type' => 'required',
+        ], [
+            'location.required' => 'Выберите место нахождения.', 
+            'equipment_type.required' => 'Выберите тип оборудования.', 
+        ]);
+
+        $eq = new Equipment();
+
+        $eq->title = $r->input('title');
+        $eq->location_id = $r->input('location');
+        $eq->equipment_type_id = $r->input('equipment_type');
+        $eq->description = $r->input('description') ?? null;
+        $eq->remark = $r->input('remark') ?? null;
+        $eq->save();
+
+        return back(); 
+    }
+
+
+
+
+
+
 
     public function report()
     {
