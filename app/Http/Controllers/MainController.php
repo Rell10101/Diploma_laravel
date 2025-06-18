@@ -439,9 +439,27 @@ public function deletePhoto($id, $photo)
         return redirect()->back()->with('success', 'Номер телефона обновлен!');
     }
 
-    public function equipment_show()
+    public function equipment_show(Request $request)
     {
-        $equipment = Equipment::all(); 
+         $query = Equipment::query();
+
+        if ($request->has('search') && $request->input('search') != '') {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('title', 'LIKE', "%{$search}%")
+                ->orWhere('description', 'LIKE', "%{$search}%")
+                ->orWhere('remark', 'LIKE', "%{$search}%")
+                ->orWhereHas('location', function($q) use ($search) {
+                  $q->where('title', 'LIKE', "%{$search}%");
+              })
+              ->orWhereHas('equipment_type', function($q) use ($search) {
+                  $q->where('type', 'LIKE', "%{$search}%");
+              });
+        });
+        }
+
+        $equipment = $query->get();
+
         return view('equipment_show', compact('equipment')); 
     }
 

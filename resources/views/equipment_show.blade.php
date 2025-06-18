@@ -53,6 +53,40 @@
         .button_eq_add:hover {
             background-color: #0056b3; /* Цвет фона при наведении */
         }
+
+        .search-container {
+    margin: 20px 0;
+    text-align: left; /* Центрирование формы */
+}
+
+.search-container form {
+    display: inline-block; /* Чтобы форма не занимала всю ширину */
+    position: relative; /* Для позиционирования кнопки */
+}
+
+.search-container input[type="text"] {
+    padding: 10px; /* Отступы внутри поля ввода */
+    width: 300px; /* Ширина поля ввода */
+    border: 1px solid #ccc; /* Цвет границы */
+    border-radius: 5px; /* Закругление углов */
+    font-size: 16px; /* Размер шрифта */
+}
+
+.search-container button {
+    padding: 10px 15px; /* Отступы внутри кнопки */
+    background-color: #5cb85c; /* Цвет фона кнопки */
+    color: white; /* Цвет текста кнопки */
+    border: none; /* Убираем границу */
+    border-radius: 5px; /* Закругление углов */
+    cursor: pointer; /* Указатель при наведении */
+    font-size: 16px; /* Размер шрифта */
+    position: absolute; /* Позиционирование кнопки */
+    right: 0; /* Выравнивание по правому краю */
+}
+
+.search-container button:hover {
+    background-color: #0056b3; /* Цвет фона кнопки при наведении */
+}
 </style>
 
     <h1>Просмотр оборудования</h1>
@@ -60,6 +94,14 @@
     @if(Auth::user()->role_id == 2 || Auth::user()->role_id == 4)
         <a href="/equipment_add_show" class="button_eq_add">Добавить новое оборудование</a>
     @endif
+
+    <div class="search-container">
+    <form method="GET" action="{{ route('equipment_show') }}">
+        <input type="text" name="search" placeholder="Поиск по названию, описанию и т.д." value="{{ request()->get('search') }}">
+        <button type="submit">Поиск</button>
+    </form>
+</div>
+
 
     <div class="card-container" id="equipment-list">
         @foreach ($equipment as $eq)
