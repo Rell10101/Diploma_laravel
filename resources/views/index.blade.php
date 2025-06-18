@@ -7,7 +7,7 @@
 @endsection
 
 @section('main_content')
-    <h1>Главная страница</h1>
+    <p>Главная</p>
     
 
     <style>
@@ -61,17 +61,15 @@
         }
     </style>
 
-    @if(Auth::user()->role_id == 2 || Auth::user()->role_id == 1)
-        <h1>Создать объявление</h1>
-        <form action="/news" method="POST">
-            @csrf
-            <input type="text" name="title" placeholder="Тема объявления" required>
-            <textarea name="content" placeholder="Содержимое объявления" required></textarea>
-            <button type="submit">Создать</button>
-        </form>
-    @endif
+    <h1>Создать объявление</h1>
+    <form action="/news" method="POST">
+        @csrf
+        <input type="text" name="title" placeholder="Тема объявления" required>
+        <textarea name="content" placeholder="Содержимое объявления" required></textarea>
+        <button type="submit">Создать</button>
+    </form>
 
-    <h3>Объявления</h3>
+    <h2>Список объявлений</h2>
     <div>
         @foreach ($news as $item)
             <div class="news">

@@ -80,6 +80,12 @@ Route::post('/requests/{id}/update-description', [MainController::class, 'update
 Route::post('/requests/{id}/upload-photo', [MainController::class, 'uploadPhoto'])->name('requests.uploadPhoto');
 Route::delete('/requests/{id}/delete-photo/{photo}', [MainController::class, 'deletePhoto'])->name('requests.deletePhoto');
 
+// объявления
+use App\Http\Controllers\NewsController;
+
+Route::get('/', [NewsController::class, 'index']);
+Route::post('/news', [NewsController::class, 'store']);
+
 
 // отчёты
 Route::get('/report', [MainController::class, 'report'])->name('report');
@@ -88,7 +94,7 @@ Route::get('/report', [MainController::class, 'report'])->name('report');
 Route::get('/equipment_show', [MainController::class, 'equipment_show'])->name('equipment_show');
 
 // чат-бот
-Route::get('/chat', [ChatController::class, 'chat'])->name('chat');
+// Route::get('/chat', [ChatController::class, 'chat'])->name('chat');
 Route::post('/chat_accept', [ChatController::class, "chat_accept"] );
 
 // база знаний
@@ -106,5 +112,10 @@ Route::post('/openai/response', [OpenAIController::class, 'getResponse']);
 Route::get('/chat_ai', function () {
     return view('chat_ai');
 });
+
+
+
+
+
 
 

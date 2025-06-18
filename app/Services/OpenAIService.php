@@ -7,14 +7,19 @@ use GuzzleHttp\Exception\RequestException;
 
 class OpenAIService
 {
+    
+       
+
     protected $client;
     protected $apiKey;
     protected $baseUrl;
 
     public function __construct()
     {
-        $this->apiKey = 'io-v2-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJvd25lciI6ImEyNWY5ZTVmLWFlNGQtNGVlNi04Y2M1LTU3OGQxMjZmMDkwNSIsImV4cCI6NDkwMDQ0OTM5MX0.dNj55xRZwrrf49RTr5_3k8jru9q_6U7-0R4_qZDlTyVxv0mF2Ungt0h8u3BahFx4KuCWo-Ep_qqPoSZ-tXIH1Q'; // Замените на ваш API-ключ
+        $this->apiKey = 'io-v2-eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJvd25lciI6ImEyNWY5ZTVmLWFlNGQtNGVlNi04Y2M1LTU3OGQxMjZmMDkwNSIsImV4cCI6NDkwMDQ0OTM5MX0.dNj55xRZwrrf49RTr5_3k8jru9q_6U7-0R4_qZDlTyVxv0mF2Ungt0h8u3BahFx4KuCWo-Ep_qqPoSZ-tXIH1Q'; 
+        // $this->apiKey = 'sk-5d1c070909214d6e93646bbf7c7fce34';
         $this->baseUrl = 'https://api.intelligence.io.solutions/api/v1/';
+        // $this->baseUrl = 'http://localhost:3000';
         $this->client = new Client();
     }
 
@@ -22,6 +27,7 @@ class OpenAIService
     {
         $body = [
             'model' => 'meta-llama/Llama-3.3-70B-Instruct',
+            // 'model' => 'RagModel',
             'messages' => [
                 ['role' => 'system', 'content' => 'Ты специалист по устройству компьютера'],
                 ['role' => 'user', 'content' => $prompt],
