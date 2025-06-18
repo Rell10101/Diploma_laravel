@@ -74,6 +74,10 @@ Route::get('/request_full/{id}', [MainController::class, 'request_full'])->name(
 // комментарии к заявкам
 Route::post('requests/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::get('requests/{id}/comments', [CommentController::class, 'show'])->name('comments.show');
+Route::post('/requests/{id}/update-description', [MainController::class, 'updateDescription'])->name('requests.updateDescription');
+
+// отчёты
+Route::get('/report', [MainController::class, 'report'])->name('report');
 
 // показ оборудования
 Route::get('/equipment_show', [MainController::class, 'equipment_show'])->name('equipment_show');

@@ -87,6 +87,9 @@ class MainController extends Controller
         // Сохранение массива имен файлов в формате JSON
         $request->photos = json_encode($filenames);
 
+        $request->created_at = now(); // Установка времени создания
+        $request->updated_at = now();
+        //Requests::create($request);
         $request->save();
 
         $user = Auth::user(); 
@@ -112,6 +115,21 @@ class MainController extends Controller
         }
 
         return back();
+    }
+
+    public function updateDescription(Request $request, $id)
+    {
+        $request->validate([
+            'description' => 'required|string',
+        ]);
+
+        $requestToUpdate = Requests::findOrFail($id);
+        $requestToUpdate->description = $request->description;
+        $requestToUpdate->updated_at = now();
+        
+        $requestToUpdate->save();
+
+        return redirect()->back()->with('success', 'Описание успешно обновлено!');
     }
 
     public function simple_request_send(Request $r) {
@@ -345,5 +363,35 @@ class MainController extends Controller
     {
         $equipment = Equipment::all(); 
         return view('equipment_show', compact('equipment')); 
+    }
+
+    public function report()
+    {
+        $requests = Requests::all(); 
+        // Группируем заявки по полю title и считаем количество каждой проблемы
+        $problemCounts = $requests->groupBy('title')->map(function ($group) {
+            return $group->count();
+        });
+
+        // Находим самую частую проблему
+        $pr = $problemCounts->sortDesc()->first();
+        $prTitle = $problemCounts->sortDesc()->keys()->first();
+
+        $equipmentCounts = $requests->groupBy('equipment_id')->map(function ($group) {
+            return $group->count();
+        });
+        // Находим оборудование с наибольшим количеством проблем
+        $eqCount = $equipmentCounts->sortDesc()->first();
+        $eqId = $equipmentCounts->sortDesc()->keys()->first();
+
+        // Получаем информацию об оборудовании (например, название) по его ID
+        $eq = Equipment::find($eqId);
+
+
+        // Получаем количество записей, где title равно "Другое"
+        $otherCount = Requests::where('title', 'Другое')->count();
+
+
+        return view('report', compact('requests', 'pr', 'prTitle', 'eq', 'eqCount', 'otherCount'));
     }
 }

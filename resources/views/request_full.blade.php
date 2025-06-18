@@ -200,13 +200,33 @@ function changeImage(direction) {
     img.src = imagesArray[currentImageIndex]; // Обновляем изображение
 }
 
+    document.addEventListener('DOMContentLoaded', function() {
+        const editButton = document.getElementById('editDescriptionBtn');
+        if (editButton) {
+            editButton.addEventListener('click', function() {
+                // Скрываем текстовое поле и показываем форму редактирования
+                document.getElementById('descriptionText').style.display = 'none';
+                document.getElementById('descriptionForm').style.display = 'block';
+                this.style.display = 'none'; // Скрываем кнопку редактирования
+            });
+        }
+    });
 
     </script>
 
     <div class="container">
         <h1>{{ $request->title }}</h1>
         <p><strong>ID:</strong> {{ $request->id }}</p>
-        <p><strong>Описание:</strong> {{ $request->description }}</p>
+        <!-- <p><strong>Описание:</strong> {{ $request->description }}</p> -->
+    <p><strong>Описание:</strong></p>
+    <form action="{{ route('requests.updateDescription', $request->id) }}" method="POST" id="descriptionForm" style="display: none;">
+        @csrf
+        <textarea name="description" id="description" class="form-control">{{ $request->description }}</textarea>
+        <button type="submit" class="btn btn-primary">Сохранить</button>
+    </form>
+    <p id="descriptionText">{{ $request->description }}</p>
+    <button id="editDescriptionBtn" class="btn btn-secondary">Редактировать</button>
+
         <p><strong>Клиент:</strong> {{ $request->client }}</p>
         <p><strong>Срок выполнения:</strong> 
                     @if($request->deadline)
