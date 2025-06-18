@@ -85,8 +85,123 @@
     .comment-form button:hover {
         background-color: #0056b3; /* Цвет фона кнопки при наведении */
     }
+
+
+    /* Стили для модального окна */
+        .modal {
+            display: none; 
+            position: fixed; 
+            z-index: 1; 
+            padding-top: 100px; 
+            left: 0;
+            top: 0;
+            width: 100%; 
+            height: 100%; 
+            overflow: auto; 
+            background-color: rgb(0,0,0); 
+            background-color: rgba(0,0,0,0.9); 
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            width: 90%; 
+            max-width: 90%; 
+        }
+
+        .close {
+            position: absolute;
+            top: 15px;
+            right: 35px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: #bbb;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .prev, .next {
+    position: absolute;
+    top: 50%;
+    width: auto;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 18px;
+    transition: 0.6s ease;
+    border: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.prev {
+    left: 0;
+}
+
+.next {
+    right: 0;
+}
+
+.prev:hover, .next:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
     </style>
 
+    <script>
+        document.addEventListener('keydown', function(event) {
+    if (document.getElementById("myModal").style.display === "block") {
+        if (event.key === "ArrowLeft") {
+            changeImage(-1); // Предыдущая фотография
+        } else if (event.key === "ArrowRight") {
+            changeImage(1); // Следующая фотография
+        } else if (event.key === "Escape") {
+            closeModal(); // Закрыть модальное окно при нажатии Esc
+        }
+    }
+});
+
+let currentImageIndex = 0; // Индекс текущего изображения
+let imagesArray = []; // Массив изображений
+
+function openModal(src) {
+    var modal = document.getElementById("myModal");
+    var img = document.getElementById("img01");
+    var captionText = document.getElementById("caption");
+    
+    // Заполняем массив изображений
+    imagesArray = [...document.querySelectorAll('.gallery img')].map(img => img.src);
+    
+    currentImageIndex = imagesArray.indexOf(src); // Устанавливаем текущий индекс
+    img.src = src;
+    captionText.innerHTML = "Фото"; // Вы можете изменить текст подписи, если нужно
+    modal.style.display = "block";
+}
+
+function closeModal() {
+    var modal = document.getElementById("myModal");
+    modal.style.display = "none";
+}
+
+function changeImage(direction) {
+    currentImageIndex += direction; // Изменяем индекс в зависимости от направления
+    if (currentImageIndex < 0) {
+        currentImageIndex = imagesArray.length - 1; // Переход к последнему изображению
+    } else if (currentImageIndex >= imagesArray.length) {
+        currentImageIndex = 0; // Переход к первому изображению
+    }
+    var img = document.getElementById("img01");
+    img.src = imagesArray[currentImageIndex]; // Обновляем изображение
+}
+
+
+    </script>
 
     <div class="container">
         <h1>{{ $request->title }}</h1>
@@ -169,6 +284,29 @@
                     @endif
                 @endif
         <br>
+
+         @if(!empty($request->photos))
+        <div class="gallery">
+            @foreach($request->photos_array as $photo)
+                <img src="{{ asset('uploads/' . trim($photo)) }}" alt="Фото" class="thumbnail" style="max-width: 200px; max-height: 200px; margin: 5px; cursor: pointer;" onclick="openModal(this.src)">
+            @endforeach
+        </div>
+        @else
+        <p>Нет фотографий для отображения.</p>
+        @endif
+
+        <!-- Модальное окно -->
+<div id="myModal" class="modal" style="display:none;">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="img01">
+    <div id="caption"></div>
+    <button class="prev" onclick="changeImage(-1)">&#10094;</button>
+    <button class="next" onclick="changeImage(1)">&#10095;</button>
+</div>
+
+
+        
+
         <a href="{{ route('requests.request_show') }}">Назад к списку заявок</a>
 
         

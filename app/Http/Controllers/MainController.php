@@ -173,7 +173,14 @@ class MainController extends Controller
             //$requests = Requests::all();
         }
 
-        return view('request_show', compact('requests', 'executors'));
+        $statusColors = [
+            'В ожидании исполнителя' => 'rgb(255, 165, 0)', 
+            'В работе' => 'rgb(65, 105, 225)', 
+            'Выполнено' => 'rgb(0, 128, 0)', 
+            'проверено' => 'rgb(0, 128, 0)', 
+        ];
+
+        return view('request_show', compact('requests', 'executors', 'statusColors'));
     }
 
     public function filter(Request $request)

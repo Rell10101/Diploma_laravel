@@ -97,3 +97,5 @@ Route::post('/openai/response', [OpenAIController::class, 'getResponse']);
 Route::get('/chat_ai', function () {
     return view('chat_ai');
 });
+
+

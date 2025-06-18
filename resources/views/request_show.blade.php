@@ -101,11 +101,12 @@ $(document).ready(function() {
                 <h2><a href="{{ route('request_full', ['id' => $r->id]) }}">{{ $r->title }}</a></h2>
             </div>
             <div class="card-body">
+                <p><strong>Номер:</strong> {{ $r->id }}</p>
                 <p><strong>Клиент:</strong> {{ $r->client }}</p>
-                <p><strong>Срок выполнения:</strong> {{ $r->deadline }}</p>
-                <p><strong>Приоритет:</strong> {{ $r->priority }}</p>
+                <p><strong>Срок выполнения:</strong> {{ $r->deadline ? : 'Не определён' }}</p>
+                <p><strong>Приоритет:</strong> {{ $r->priority ? : 'Не определён' }}</p>
                 <p><strong>Исполнитель:</strong> {{ $r->executor ? $r->executor->name : '-' }}</p>
-                <p><strong>Статус выполнения:</strong> {{ $r->status }}</p>
+                <p><strong>Статус выполнения:</strong> {{ $r->status }} <span style="display: inline-block; width: 10px; height: 10px; background-color: {{ $statusColors[$r->status] }}; border-radius: 50%; margin-right: 5px;"></span></p>
                 <p><strong>Аппаратура:</strong> {{ $r->equipment->title }}</p>
             </div>
         </div>

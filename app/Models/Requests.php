@@ -32,4 +32,9 @@ class Requests extends Model
         return $this->belongsTo(User::class, 'executor_id'); // 'executor' - это поле в таблице Requests
     }
 
+    public function getPhotosArrayAttribute()
+    {
+        return json_decode($this->photos, true); // Преобразование JSON в массив
+    }
+
 }
