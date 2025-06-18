@@ -119,18 +119,74 @@ class MainController extends Controller
 
     public function updateDescription(Request $request, $id)
     {
-        $request->validate([
-            'description' => 'required|string',
-        ]);
 
         $requestToUpdate = Requests::findOrFail($id);
         $requestToUpdate->description = $request->description;
         $requestToUpdate->updated_at = now();
-        
+
         $requestToUpdate->save();
 
         return redirect()->back()->with('success', 'Описание успешно обновлено!');
     }
+
+    public function uploadPhoto(Request $request, $id)
+{
+    $request->validate([
+        'photos.*' => 'required|image|mimes:jpeg,png,jpg,gif|max:12000', // Проверка для массива изображений
+    ]);
+
+    $requestToUpdate = Requests::findOrFail($id);
+    
+    // Декодируем существующие фотографии из JSON
+    $photos = json_decode($requestToUpdate->photos, true) ?? [];
+
+    // Обработка загруженных фотографий
+    if ($request->hasFile('photos')) {
+        foreach ($request->file('photos') as $file) {
+            $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension(); // Генерация уникального имени файла
+            $file->move(public_path('uploads'), $filename); // Перемещение файла в папку uploads
+            $photos[] = $filename; // Добавление имени файла в массив
+        }
+    }
+
+    // Сохранение массива имен файлов в формате JSON
+    $requestToUpdate->photos = json_encode($photos);
+    $requestToUpdate->updated_at = now();
+
+    $requestToUpdate->save();
+
+    return redirect()->back()->with('success', 'Фотография успешно загружена!');
+}
+
+
+
+public function deletePhoto($id, $photo)
+{
+    $requestToUpdate = Requests::findOrFail($id);
+    
+    // Полный путь к файлу
+    $filePath = public_path('uploads/' . $photo);
+    
+    // Удаление фотографии из хранилища
+    if (file_exists($filePath)) {
+        unlink($filePath); // Удаляем файл
+    }
+    
+    // Декодируем существующие фотографии из JSON
+    $photos = json_decode($requestToUpdate->photos, true) ?? [];
+
+    // Удаляем путь из массива
+    $photos = array_filter($photos, function($p) use ($photo) {
+        return $p !== $photo;
+    });
+
+    // Сохранение обновленного массива имен файлов в формате JSON
+    $requestToUpdate->photos = json_encode(array_values($photos)); // array_values для переиндексации массива
+    $requestToUpdate->save();
+
+    return redirect()->back()->with('success', 'Фотография успешно удалена!');
+}
+
 
     public function simple_request_send(Request $r) {
 

@@ -74,7 +74,12 @@ Route::get('/request_full/{id}', [MainController::class, 'request_full'])->name(
 // комментарии к заявкам
 Route::post('requests/{id}/comments', [CommentController::class, 'store'])->name('comments.store');
 Route::get('requests/{id}/comments', [CommentController::class, 'show'])->name('comments.show');
+// редактирование описания
 Route::post('/requests/{id}/update-description', [MainController::class, 'updateDescription'])->name('requests.updateDescription');
+// добавление и удаление фотографий
+Route::post('/requests/{id}/upload-photo', [MainController::class, 'uploadPhoto'])->name('requests.uploadPhoto');
+Route::delete('/requests/{id}/delete-photo/{photo}', [MainController::class, 'deletePhoto'])->name('requests.deletePhoto');
+
 
 // отчёты
 Route::get('/report', [MainController::class, 'report'])->name('report');

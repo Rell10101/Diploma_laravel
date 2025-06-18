@@ -214,6 +214,18 @@ function changeImage(direction) {
 
     </script>
 
+
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
     <div class="container">
         <h1>{{ $request->title }}</h1>
         <p><strong>ID:</strong> {{ $request->id }}</p>
@@ -305,15 +317,31 @@ function changeImage(direction) {
                 @endif
         <br>
 
-         @if(!empty($request->photos))
+    <h2>Добавить фотографию</h2>
+    <form action="{{ route('requests.uploadPhoto', $request->id) }}" method="POST" enctype="multipart/form-data">
+    @csrf
+    <input type="file" name="photos[]" accept="image/*" multiple required> <!-- Обратите внимание на 'photos[]' и 'multiple' -->
+    <button type="submit" class="btn btn-primary">Загрузить</button>
+</form>
+
+
+    <h2>Фотографии</h2>
+    @if(!empty($request->photos))
         <div class="gallery">
             @foreach($request->photos_array as $photo)
-                <img src="{{ asset('uploads/' . trim($photo)) }}" alt="Фото" class="thumbnail" style="max-width: 200px; max-height: 200px; margin: 5px; cursor: pointer;" onclick="openModal(this.src)">
+                <div class="photo-item">
+                    <img src="{{ asset('uploads/' . trim($photo)) }}" alt="Фото" class="thumbnail" style="max-width: 200px; max-height: 200px; margin: 5px; cursor: pointer;" onclick="openModal(this.src)">
+                    <form action="{{ route('requests.deletePhoto', [$request->id, trim($photo)]) }}" method="POST" style="display:inline;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">Удалить</button>
+                    </form>
+                </div>
             @endforeach
         </div>
-        @else
+    @else
         <p>Нет фотографий для отображения.</p>
-        @endif
+    @endif
 
         <!-- Модальное окно -->
 <div id="myModal" class="modal" style="display:none;">
