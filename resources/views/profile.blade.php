@@ -24,7 +24,8 @@
 
     <p><strong>Имя:</strong> {{ $user->name }}</p>
     <p><strong>Email:</strong> {{ $user->email }}</p>
-    
+    <p><strong>Телефон:</strong> {{ $user->phone ? : 'Нет' }}</p>
+
     <p><strong>Роль:</strong> 
         @if($user->role_id == 3)
             Клиент
@@ -38,6 +39,9 @@
             Неизвестная роль
         @endif
     </p>
+
+
+
 
     <form action="{{ route('logout') }}" method="POST" style="position: fixed; bottom: 20px; left: 20px;">
     @csrf

@@ -28,7 +28,8 @@ Route::middleware(['auth'])->group(function () {
 
 // маршрут на профиль
 Route::get('/profile', [MainController::class, 'profile_show'])->middleware('auth');
-
+// Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::post('/profile', [MainController::class, 'phone_update'])->name('phone_update');
 
 // отправка заявки
 Route::get('/request_type_choice', [MainController::class, "request_type_choice"] );
@@ -112,6 +113,8 @@ Route::post('/openai/response', [OpenAIController::class, 'getResponse']);
 Route::get('/chat_ai', function () {
     return view('chat_ai');
 });
+
+
 
 
 

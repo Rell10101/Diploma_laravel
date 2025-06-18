@@ -43,7 +43,7 @@
         font-size: 0.9em; /* Уменьшенный размер шрифта для даты и времени */
     }
 
-     .comment-form {
+    .comment-form {
         margin-top: 20px; /* Отступ сверху для формы */
         padding: 15px; /* Внутренние отступы */
         background-color: #f9f9f9; /* Цвет фона формы */
@@ -190,24 +190,23 @@ function closeModal() {
 }
 
 function changeImage(direction) {
-    currentImageIndex += direction; // Изменяем индекс в зависимости от направления
+    currentImageIndex += direction; 
     if (currentImageIndex < 0) {
-        currentImageIndex = imagesArray.length - 1; // Переход к последнему изображению
+        currentImageIndex = imagesArray.length - 1; 
     } else if (currentImageIndex >= imagesArray.length) {
-        currentImageIndex = 0; // Переход к первому изображению
+        currentImageIndex = 0; 
     }
     var img = document.getElementById("img01");
-    img.src = imagesArray[currentImageIndex]; // Обновляем изображение
+    img.src = imagesArray[currentImageIndex];
 }
 
     document.addEventListener('DOMContentLoaded', function() {
         const editButton = document.getElementById('editDescriptionBtn');
         if (editButton) {
             editButton.addEventListener('click', function() {
-                // Скрываем текстовое поле и показываем форму редактирования
                 document.getElementById('descriptionText').style.display = 'none';
                 document.getElementById('descriptionForm').style.display = 'block';
-                this.style.display = 'none'; // Скрываем кнопку редактирования
+                this.style.display = 'none'; 
             });
         }
     });
@@ -236,14 +235,25 @@ function changeImage(direction) {
         <textarea name="description" id="description" class="form-control">{{ $request->description }}</textarea>
         <button type="submit" class="btn btn-primary">Сохранить</button>
     </form>
-    <p id="descriptionText">{{ $request->description }}</p>
-    <button id="editDescriptionBtn" class="btn btn-secondary">Редактировать</button>
-
+    <p id="descriptionText" style="border: 1px solid rgb(100, 101, 100); border-radius: 10px; padding: 15px;">{{ $request->description }}</p>
+    @if($request->status = "В ожидании исполнителя" && $request->client == Auth::user()->name)
+        <button id="editDescriptionBtn" class="btn btn-secondary" style="background-color: rgb(11, 125, 38);">Редактировать</button>
+    @endif
+    <br>
+    <br>
         <p><strong>Клиент:</strong> {{ $request->client }}</p>
+        @if($request->clientUser)
+            <p><strong>Email клиента:</strong> {{ $request->clientUser->email }}</p>
+            <p><strong>Телефон клиента:</strong> {{ $request->clientUser->phone }}</p>
+        @else
+            <p><strong>Телефон:</strong> Неизвестен</p>
+            <p><strong>Email:</strong> Неизвестен</p>
+        @endif
         <p><strong>Срок выполнения:</strong> 
                     @if($request->deadline)
                         {{ $request->deadline }}
                     @else
+                        Не определён
                         @if(Auth::user()->role_id == 2)
                             <form action="{{ route('requests_updateDeadline', $request->id) }}" method="POST" style="display:inline;">
                                 @csrf
@@ -256,8 +266,9 @@ function changeImage(direction) {
                 </p>
         <p><strong>Приоритет:</strong> 
                     @if($request->priority)
-                        {{ $request->priority }}
+                        {{ $request->priority ? : 'Не определён' }}
                     @else 
+                        Не определён
                         @if(Auth::user()->role_id == 2)
                             <form action="{{ route('requests_updatePriority', $request->id) }}" method="POST" style="display:inline;">
                                 @csrf
@@ -272,7 +283,7 @@ function changeImage(direction) {
                         @endif
                     @endif
                 </p>
-        <p><strong>Исполнитель:</strong> {{ $request->executor ? $request->executor->name : '-' }}</p>
+        <p><strong>Исполнитель:</strong> {{ $request->executor ? $request->executor->name : 'Не назначен' }}</p>
         @if(Auth::user()->role_id == 2)
                     <form action="{{ route('requests.updateExecutor', $request->id) }}" method="POST" style="display:inline;">
                         @csrf
@@ -291,40 +302,42 @@ function changeImage(direction) {
         <p><strong>Менеджер:</strong> {{ $request->manager }}</p>
         <p><strong>Аппаратура:</strong> {{ $request->equipment->title }}</p>
         @if(Auth::user()->role_id == 4)
-                    @if($request->executor_id == NULL)
-                                                <form action="{{ route('requests.accept', $request->id) }}" method="POST" style="display:inline;">
-                            @csrf
-                            <button type="submit">Принять</button>
-                        </form>
-                    @elseif($request->executor_id == Auth::user()->id)
-                        @if($request->status == 'В работе')
-                            <form action="{{ route('requests.complete', $request->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit">Выполнено</button>
-                            </form>
-                            <form action="{{ route('requests.decline', $request->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit">Не могу выполнить</button>
-                            </form>
-                            <br>
-                        @elseif($r->status == 'Выполнено')
-                            <form action="{{ route('requests.markAsNotCompleted', $request->id) }}" method="POST" style="display:inline;">
-                                @csrf
-                                <button type="submit">Не выполнено</button>
-                            </form>
-                        @endif
-                    @endif
+            @if($request->executor_id == NULL)
+                <form action="{{ route('requests.accept', $request->id) }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit">Принять</button>
+                </form>
+            @elseif($request->executor_id == Auth::user()->id)
+                @if($request->status == 'В работе')
+                    <form action="{{ route('requests.complete', $request->id) }}" method="POST" style="display:inline;">
+                         @csrf
+                        <button type="submit">Выполнено</button>
+                    </form>
+                    <form action="{{ route('requests.decline', $request->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit">Не могу выполнить</button>
+                    </form>
+                    <br>
+                @elseif($r->status == 'Выполнено')
+                    <form action="{{ route('requests.markAsNotCompleted', $request->id) }}" method="POST" style="display:inline;">
+                        @csrf
+                        <button type="submit">Не выполнено</button>
+                    </form>
                 @endif
+            @endif
+        @endif
+        @if($request->client == Auth::user()->name) 
+            <form action="{{ route('requests.destroy', $request->id) }}" method="POST" style="display:inline;" onsubmit="return confirm('Вы уверены, что хотите удалить эту запись?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit">Отозвать заявку</button>
+            </form>
+        @endif
         <br>
 
-    <h2>Добавить фотографию</h2>
-    <form action="{{ route('requests.uploadPhoto', $request->id) }}" method="POST" enctype="multipart/form-data">
-    @csrf
-    <input type="file" name="photos[]" accept="image/*" multiple required> <!-- Обратите внимание на 'photos[]' и 'multiple' -->
-    <button type="submit" class="btn btn-primary">Загрузить</button>
-</form>
+    
 
-
+    <br>
     <h2>Фотографии</h2>
     @if(!empty($request->photos))
         <div class="gallery">
@@ -342,7 +355,14 @@ function changeImage(direction) {
     @else
         <p>Нет фотографий для отображения.</p>
     @endif
-
+    @if( $request->client == Auth::user()->name )
+    <h2>Добавить фотографию</h2>
+    <form action="{{ route('requests.uploadPhoto', $request->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="file" name="photos[]" accept="image/*" multiple required> 
+        <button type="submit" class="btn btn-primary">Загрузить</button>
+    </form>
+    @endif
         <!-- Модальное окно -->
 <div id="myModal" class="modal" style="display:none;">
     <span class="close" onclick="closeModal()">&times;</span>

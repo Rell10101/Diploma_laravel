@@ -37,4 +37,9 @@ class Requests extends Model
         return json_decode($this->photos, true); // Преобразование JSON в массив
     }
 
+    public function clientUser()
+    {
+        return $this->belongsTo(User::class, 'client', 'name');
+    }
+
 }

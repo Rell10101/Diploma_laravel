@@ -79,8 +79,8 @@ $(document).ready(function() {
     <input type="text" id="client" placeholder="Поиск по клиенту">
     <select id="status">
         <option value="">Все статусы</option>
-        <option value="completed">Завершено</option>
-        <option value="in_progress">В процессе</option>
+        <option value="Проверено">Проверено</option>
+        <option value="В работе">В работе</option>
         <option value="В ожидании исполнителя">В ожидании исполнителя</option>
     </select>
     <select id="sort_by">
@@ -98,7 +98,7 @@ $(document).ready(function() {
     @foreach ($requests as $r)
         <div class="card">
             <div class="card-header">
-                <h2><a href="{{ route('request_full', ['id' => $r->id]) }}">{{ $r->title }}</a></h2>
+                <h2><a href="{{ route('request_full', ['id' => $r->id]) }}" style="color: inherit; text-decoration: none;">{{ $r->title }}</a></h2>
             </div>
             <div class="card-body">
                 <p><strong>Номер:</strong> {{ $r->id }}</p>
@@ -132,7 +132,7 @@ $(document).ready(function() {
         sort_order: sort_order
     },
     success: function(data, textStatus, xhr) {
-        $('#request-list').empty(); // Очистите текущий список
+        $('#request-list').empty(); 
         if (xhr.status === 204) {
             $('#request-list').append('<p>Нет заявок, соответствующих критериям фильтрации.</p>');
             return;
@@ -148,7 +148,7 @@ $(document).ready(function() {
                         <p><strong>Срок выполнения:</strong> ${r.deadline ? r.deadline : 'Не указано'}</p>
                         <p><strong>Приоритет:</strong> ${r.priority ? r.priority : 'Не указан'}</p>
                         <p><strong>Исполнитель:</strong> ${r.executor ? r.executor.name : '-'}</p>
-                        <p><strong>Статус выполнения:</strong> ${r.status}</p>
+                        <p><strong>Статус выполнения:</strong> ${r.status}<span style="display: inline-block; width: 10px; height: 10px; background-color: {{ $statusColors[$r->status] }}; border-radius: 50%; margin-right: 5px; margin-left: 5px;"></span></p>
                         <p><strong>Аппаратура:</strong> ${r.equipment.title}</p>
                     </div>
                 </div>

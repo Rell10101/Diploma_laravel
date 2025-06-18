@@ -47,22 +47,32 @@ class MainController extends Controller
 
         $executors = User::where('role_id', 4)->get();
 
-        return view('request', compact('equipment', 'equipment_type', 'executors', 'problem', 'location')); 
+        $problemsByType = [];
+        foreach ($problem as $item) {
+            $problemsByType[$item->equipment_type_id][] = $item;
+        }
+
+        return view('request', compact('equipment', 'equipment_type', 'executors', 'problem', 'location', 'problemsByType')); 
 
     }
 
     public function request_send(Request $r) {
 
         $valid = $r->validate([
+            'equipment_id' => 'required',
             'problem' => 'required',
             'photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
+        ], [
+            'equipment_id.required' => 'Выберите оборудование.', 
+            'problem.required' => 'Выберите тип проблемы.', 
+            'photos.*.required' => 'Фотографии превышают допустимый размер', 
         ]);
 
         $request = new Requests();
 
         $request->title = $r->input('problem');
 
-        $request->description = $r->input('description') ?? '-';
+        $request->description = $r->input('description') ?? null;
 
         $request->client = Auth::user()->name;
         $request->deadline = $r->input('deadline');
@@ -289,7 +299,7 @@ public function deletePhoto($id, $photo)
 
     public function request_full($id)
     {
-        $request = Requests::findOrFail($id); // Получаем заявку по ID
+        $request = Requests::with('clientUser')->find($id); // Получаем заявку по ID
         $comments = Comment::where('request_id', $id)
                        ->orderBy('created_at', 'desc') // Сортируем по времени создания в обратном порядке
                        ->get(); // Получаем комментарии для этой заявки
@@ -390,9 +400,9 @@ public function deletePhoto($id, $photo)
 
         if (Auth::user()->name == $request->client) {
             $request->delete();
-            return redirect()->back()->with('success', 'Запись успешно удалена.');
+            return redirect()->route('requests.request_show')->with('success', 'Запись успешно удалена.');
         } else {
-            return redirect()->back()->with('error', 'У вас нет прав для удаления этой записи.');
+            return redirect()->route('requests.request_show')->with('error', 'У вас нет прав для удаления этой записи.');
         }
     }
 
@@ -414,6 +424,18 @@ public function deletePhoto($id, $photo)
         return view('profile', compact('user')); 
     }
 
+    public function phone_update(Request $request)
+    {
+        $request->validate([
+            'phone' => 'nullable|string|max:15', // Валидация номера телефона
+        ]);
+
+        $user = Auth::user();
+        $user->phone = $request->input('phone');
+        $user->save();
+
+        return redirect()->back()->with('success', 'Номер телефона обновлен!');
+    }
 
     public function equipment_show()
     {

@@ -24,27 +24,6 @@
 
 <script>
 $(document).ready(function() {
-    $('#equipment_type').change(function() {
-        var selectedType = $(this).val();
-        
-        // Сброс второго селекта, но оставляем "Другое"
-        $('#problem').empty().append('<option value="Другое">Другое</option>');
-        $('#equipment_id').empty();
-
-        // Фильтрация проблем по выбранному типу оборудования
-        @foreach($problem as $item)
-            if (selectedType == "Все" || "{{ $item->equipment_type_id }}" == selectedType) {
-                $('#problem').append('<option value="{{ $item->problem }}">{{ $item->problem }}</option>');
-            }
-        @endforeach
-
-        // Фильтрация оборудования по выбранному типу оборудования
-        @foreach($equipment as $item)
-            if (selectedType == "Все" || "{{ $item->equipment_type_id }}" == selectedType) {
-                $('#equipment_id').append('<option value="{{ $item->id }}">{{ $item->title }}</option>');
-            }
-        @endforeach
-    });
 
     $('#location').change(function() {
         var selectedLocation = $(this).val();
@@ -58,6 +37,70 @@ $(document).ready(function() {
         @endforeach
 
     });
+
+    $('#equipment_id').change(function() {
+        var selectedEquipment = $(this).val();
+        var selectedEquipmentTypeId = null;
+
+        // Находим тип оборудования для выбранного оборудования
+        @foreach($equipment as $item)
+            if ("{{ $item->id }}" == selectedEquipment) {
+                selectedEquipmentTypeId = "{{ $item->equipment_type_id }}"; // Получаем equipment_type_id
+            }
+        @endforeach
+
+        $('#problem').empty(); // Очищаем селект с проблемами
+
+        // Добавляем "Другое" как опцию
+        $('#problem').append('<option value="Другое">Другое</option>');
+
+        // Фильтруем проблемы по equipment_type_id
+        @foreach($problem as $item)
+            if ("{{ $item->equipment_type_id }}" == selectedEquipmentTypeId) {
+                $('#problem').append('<option value="{{ $item->problem }}">{{ $item->problem }}</option>');
+            }
+        @endforeach
+    });
+
+
+    // $('#equipment_type').change(function() {
+    //     var selectedType = $(this).val();
+        
+    //     // Сброс второго селекта, но оставляем "Другое"
+    //     $('#problem').empty().append('<option value="Другое">Другое</option>');
+    //     $('#equipment_id').empty();
+
+    //     // Фильтрация проблем по выбранному типу оборудования
+    //     @foreach($problem as $item)
+    //         if (selectedType == "Все" || "{{ $item->equipment_type_id }}" == selectedType) {
+    //             $('#problem').append('<option value="{{ $item->problem }}">{{ $item->problem }}</option>');
+    //         }
+    //     @endforeach
+
+    //     // Фильтрация оборудования по выбранному типу оборудования
+    //     @foreach($equipment as $item)
+    //         if (selectedType == "Все" || "{{ $item->equipment_type_id }}" == selectedType) {
+    //             $('#equipment_id').append('<option value="{{ $item->id }}">{{ $item->title }}</option>');
+    //         }
+    //     @endforeach
+    // });
+
+    // $('#equipment_id').change(function() {
+
+    //     selectedType
+
+    //     $('#problem').empty().append('<option value="Другое">Другое</option>');
+
+    //     // Фильтрация проблем по выбранному типу оборудования
+    //     @foreach($problem as $item)
+    //         if ("{{ $item->equipment_type_id }}" == selectedType) {
+    //             $('#problem').append('<option value="{{ $item->problem }}">{{ $item->problem }}</option>');
+    //         }
+    //     @endforeach
+    // });
+
+    
+    
 });
 </script>
 
@@ -77,24 +120,26 @@ $(document).ready(function() {
         <br>
         <br>
 
-        <label for="equipment_type">Вы можете выбрать тип оборудования</label>
+        <!-- <label for="equipment_type">Вы можете выбрать тип оборудования</label>
             <select id="equipment_type" name="equipment_type" class="select2 form-control">
             <option value="Все">Все</option>
             @foreach($equipment_type as $item)
                 <option value="{{ $item->id }}">{{ $item->type }}</option>
             @endforeach
             </select>
-        <br>
-        <br>
+        <br> -->
+        <!-- <br> -->
 
         <label for="equipment_id">Выберите оборудование:</label>
-        <select class="select2 form-control" id="equipment_id" name="equipment_id">
-            @foreach($equipment as $item)
-                <option value="{{ $item->id }}">{{ $item->title }}</option>
-            @endforeach
-        </select>
-        <br>
-        <br>
+<select class="select2 form-control" id="equipment_id" name="equipment_id">
+    <option value="" disabled selected>Не выбрано</option> <!-- Опция по умолчанию -->
+    @foreach($equipment as $item)
+        <option value="{{ $item->id }}">{{ $item->title }}</option>
+    @endforeach
+</select>
+<br>
+<br>
+
 
         <label for="problem">Укажите проблему: <span class="required">*</span></label>
         <select id="problem" name="problem" class="select2 form-control">
